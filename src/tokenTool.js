@@ -33,8 +33,12 @@ const ERC20_ABI = [
   'function owner() view returns (address)',
 ];
 
-// Registry path
-const REGISTRY_PATH = path.join(__dirname, '../data/registry.json');
+// Registry path — use ~/.token-tool-mcp/ for global installs, local data/ for dev
+const REGISTRY_DIR = process.env.TOKEN_TOOL_DATA_DIR ||
+  (fs.existsSync(path.join(__dirname, '../package.json'))
+    ? path.join(__dirname, '../data')
+    : path.join(require('os').homedir(), '.token-tool-mcp'));
+const REGISTRY_PATH = path.join(REGISTRY_DIR, 'registry.json');
 
 function loadRegistry() {
   try {
