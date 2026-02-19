@@ -2,7 +2,7 @@
 
 Deploy and manage compliant ERC20 tokens via AI agents using [Bitbond TokenTool](https://tokentool.bitbond.com)'s CertiK-audited smart contracts.
 
-> **First dedicated token issuance MCP.** Built for institutional RWA workflows — not generic contract deployment.
+> **The first MCP for compliant token issuance.** CertiK-audited contracts with built-in compliance — from memecoins to regulated securities.
 
 ## Features
 
