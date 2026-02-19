@@ -11,7 +11,7 @@ Deploy and manage compliant ERC20 tokens via AI agents using [Bitbond TokenTool]
 - **10 EVM chains** — Ethereum, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche + 3 testnets
 - **$299/token** — flat fee in native token, no subscription, no API key
 - **Complete lifecycle** — deploy, mint, burn, pause, transfer, query
-- **Local registry** — tracks every token deployed through the MCP
+- **Local registry** — tracks every token you have deployed through the MCP
 
 ## Requirements
 
