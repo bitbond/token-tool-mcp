@@ -56,6 +56,13 @@ function addToRegistry(entry) {
   saveRegistry(registry);
 }
 
+function validateAddress(addr, label = 'Address') {
+  if (!addr || !ethers.isAddress(addr)) {
+    throw new Error(`${label} "${addr}" is not a valid Ethereum address.`);
+  }
+  return ethers.getAddress(addr); // checksummed
+}
+
 function getWallet(privateKey) {
   if (!privateKey) throw new Error('No private key. Set BITBOND_PRIVATE_KEY env var.');
   return new ethers.Wallet(privateKey);
@@ -153,13 +160,19 @@ async function deployToken(tokenConfig, chain, privateKey) {
   const receipt = await tx.wait();
 
   // Extract deployed contract address from logs
+  // The factory emits events from the newly created contract — find the address
+  // that isn't the factory itself
   let contractAddress = null;
+  const factoryAddr = chain.factoryAddress.toLowerCase();
   for (const log of receipt.logs || []) {
-    if (log.topics && log.topics.length > 0) {
-      // ContractDeployed event — address is in data or topics
-      contractAddress = log.address;
+    if (log.address && log.address.toLowerCase() !== factoryAddr) {
+      contractAddress = ethers.getAddress(log.address);
       break;
     }
+  }
+  // Fallback: if all logs are from factory, check contractAddress on receipt
+  if (!contractAddress && receipt.contractAddress) {
+    contractAddress = receipt.contractAddress;
   }
 
   const entry = {
@@ -190,6 +203,7 @@ async function deployToken(tokenConfig, chain, privateKey) {
 }
 
 async function getTokenInfo(contractAddress, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
   const provider = await getProvider(chain);
   const contract = new ethers.Contract(contractAddress, ERC20_ABI, provider);
 
@@ -226,6 +240,8 @@ async function getTokenInfo(contractAddress, chain, privateKey) {
 }
 
 async function transferTokens(contractAddress, to, amount, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
+  to = validateAddress(to, 'Recipient address');
   const wallet = getWallet(privateKey);
   const provider = await getProvider(chain);
   const signer = wallet.connect(provider);
@@ -237,6 +253,8 @@ async function transferTokens(contractAddress, to, amount, chain, privateKey) {
 }
 
 async function mintTokens(contractAddress, to, amount, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
+  to = validateAddress(to, 'Recipient address');
   const wallet = getWallet(privateKey);
   const provider = await getProvider(chain);
   const signer = wallet.connect(provider);
@@ -248,6 +266,7 @@ async function mintTokens(contractAddress, to, amount, chain, privateKey) {
 }
 
 async function burnTokens(contractAddress, amount, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
   const wallet = getWallet(privateKey);
   const provider = await getProvider(chain);
   const signer = wallet.connect(provider);
@@ -259,6 +278,7 @@ async function burnTokens(contractAddress, amount, chain, privateKey) {
 }
 
 async function pauseToken(contractAddress, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
   const wallet = getWallet(privateKey);
   const provider = await getProvider(chain);
   const signer = wallet.connect(provider);
@@ -269,6 +289,7 @@ async function pauseToken(contractAddress, chain, privateKey) {
 }
 
 async function unpauseToken(contractAddress, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
   const wallet = getWallet(privateKey);
   const provider = await getProvider(chain);
   const signer = wallet.connect(provider);

@@ -2,22 +2,35 @@
   "name": "token-tool-mcp",
   "version": "1.0.0",
   "description": "Bitbond Token Tool MCP — deploy and manage ERC20 tokens via AI agents",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "test": "node test/e2e.js"
   },
   "keywords": [
     "mcp",
+    "model-context-protocol",
     "token",
     "erc20",
     "blockchain",
     "bitbond",
     "rwa",
-    "tokenization"
+    "tokenization",
+    "ai-agents",
+    "web3"
   ],
-  "author": "Bitbond",
-  "license": "ISC",
+  "author": "Bitbond GmbH",
+  "license": "MIT",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
     "ethers": "^6.16.0",
@@ -29,6 +42,6 @@
   "homepage": "https://tokentool.bitbond.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thendrix-eng/token-tool-mcp"
+    "url": "https://github.com/bitbond/token-tool-mcp"
   }
 }

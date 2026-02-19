@@ -1,35 +1,46 @@
 # Bitbond Token Tool MCP
 
-Deploy and manage ERC20 tokens via AI agents using Bitbond's CertiK-audited Token Tool.
+Deploy and manage compliant ERC20 tokens via AI agents using [Bitbond Token Tool](https://tokentool.bitbond.com)'s CertiK-audited smart contracts.
 
-## What it does
+> **First dedicated token issuance MCP.** Built for institutional RWA workflows — not generic contract deployment.
 
-Gives any MCP-compatible AI agent (Claude, Cursor, OpenClaw, etc.) the ability to:
-- Deploy compliant ERC20 tokens on any major EVM chain
-- Manage token lifecycle: mint, burn, pause, transfer
-- Query live on-chain token state
-- Track all deployed tokens in a local registry
+## Features
 
-## Why Token Tool
+- **CertiK-audited contracts** — battle-tested, not DIY Solidity
+- **Compliance-ready** — whitelist, blacklist, pausable, force transfer, document URI
+- **10 EVM chains** — Ethereum, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche + 3 testnets
+- **$299/token** — flat fee in native token, no subscription, no API key
+- **Complete lifecycle** — deploy, mint, burn, pause, transfer, query
+- **Local registry** — tracks every token deployed through the MCP
 
-- **CertiK-audited** smart contracts
-- **Compliance features built in**: whitelist, blacklist, pausable, force transfer, document URI
-- **$299/token** — a rounding error for institutional RWA issuance
-- **8 chains**: Ethereum, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche + Sepolia testnet
-- **No Solidity needed** — agents just call the tool
+## Requirements
 
-## Setup
+- Node.js ≥ 18
+- An EVM wallet with native tokens for deployment gas + fee
+
+## Quick Start
 
 ```bash
+git clone https://github.com/bitbond/token-tool-mcp.git
+cd token-tool-mcp
 npm install
 ```
 
-Set your private key:
+Set your deployer private key:
+
 ```bash
 export BITBOND_PRIVATE_KEY=0x...
 ```
 
-## Claude Desktop config
+Test it:
+
+```bash
+npm start
+```
+
+## Integration
+
+### Claude Desktop
 
 Add to `~/.claude/claude_desktop_config.json`:
 
@@ -38,7 +49,7 @@ Add to `~/.claude/claude_desktop_config.json`:
   "mcpServers": {
     "token-tool": {
       "command": "node",
-      "args": ["/path/to/token-tool-mcp/src/index.js"],
+      "args": ["/absolute/path/to/token-tool-mcp/src/index.js"],
       "env": {
         "BITBOND_PRIVATE_KEY": "0x..."
       }
@@ -47,9 +58,25 @@ Add to `~/.claude/claude_desktop_config.json`:
 }
 ```
 
-## OpenClaw config
+### Cursor
 
-Add to your OpenClaw `openclaw.json`:
+Add to your Cursor MCP settings:
+
+```json
+{
+  "token-tool": {
+    "command": "node",
+    "args": ["/absolute/path/to/token-tool-mcp/src/index.js"],
+    "env": {
+      "BITBOND_PRIVATE_KEY": "0x..."
+    }
+  }
+}
+```
+
+### OpenClaw
+
+Add to your `openclaw.json`:
 
 ```json
 {
@@ -57,7 +84,7 @@ Add to your OpenClaw `openclaw.json`:
     {
       "name": "token-tool",
       "command": "node",
-      "args": ["/path/to/token-tool-mcp/src/index.js"],
+      "args": ["/absolute/path/to/token-tool-mcp/src/index.js"],
       "env": {
         "BITBOND_PRIVATE_KEY": "0x..."
       }
@@ -66,63 +93,120 @@ Add to your OpenClaw `openclaw.json`:
 }
 ```
 
-## Available tools
+### npx (after npm publish)
+
+```json
+{
+  "mcpServers": {
+    "token-tool": {
+      "command": "npx",
+      "args": ["-y", "token-tool-mcp"],
+      "env": {
+        "BITBOND_PRIVATE_KEY": "0x..."
+      }
+    }
+  }
+}
+```
+
+## Tools
 
 | Tool | Description |
 |---|---|
-| `list_chains` | List all supported chains |
+| `list_chains` | List all supported blockchain networks |
 | `estimate_cost` | Quote deployment cost before committing |
-| `deploy_token` | Deploy a new ERC20 token |
-| `get_token_info` | Live on-chain token state |
-| `list_deployed_tokens` | All tokens deployed via this MCP |
-| `transfer_tokens` | Send tokens to an address |
-| `mint_tokens` | Mint more tokens (if mintable) |
-| `burn_tokens` | Burn tokens (if burnable) |
-| `pause_token` | Emergency stop all transfers (if pausable) |
-| `unpause_token` | Resume transfers |
-| `get_wallet_info` | Deployer wallet address + balance |
+| `deploy_token` | Deploy a new ERC20 token with compliance features |
+| `get_token_info` | Live on-chain token state (name, symbol, supply, paused, owner) |
+| `list_deployed_tokens` | All tokens deployed via this MCP (local registry) |
+| `transfer_tokens` | Send tokens to another address |
+| `mint_tokens` | Mint additional supply (requires mintable) |
+| `burn_tokens` | Burn tokens from your balance (requires burnable) |
+| `pause_token` | Emergency stop all transfers (requires pausable) |
+| `unpause_token` | Resume transfers after pause |
+| `get_wallet_info` | Deployer wallet address + native token balance |
 
-## Example agent prompts
+### deploy_token parameters
+
+| Parameter | Required | Description |
+|---|---|---|
+| `name` | ✅ | Token name (e.g. "RWA Bond Series A") |
+| `symbol` | ✅ | Token ticker (e.g. "RWAB") |
+| `supply` | ✅ | Initial supply (e.g. "1000000") |
+| `chain` | ✅ | Target chain (e.g. "ethereum", "base", "sepolia") |
+| `decimals` | | Token decimals (default: 18) |
+| `mintable` | | Allow minting after deployment |
+| `burnable` | | Allow burning tokens |
+| `pausable` | | Allow pausing all transfers |
+| `whitelist` | | Only approved addresses can hold tokens |
+| `blacklist` | | Block specific addresses |
+| `force_transfer` | | Owner can force-transfer tokens (compliance) |
+| `document_uri` | | URI to legal document or prospectus |
+| `max_supply` | | Maximum total supply cap |
+| `discount_code` | | Bitbond discount code |
+
+## Example Prompts
 
 ```
 Deploy a token called "RWA Bond Series A" with symbol RWAB,
-500000 supply, on Polygon, with whitelist and pausable enabled.
+500,000 supply on Polygon, with whitelist and pausable enabled.
 ```
 
 ```
-What's the balance of my wallet on Base?
+What's my wallet balance on Base?
 ```
 
 ```
-Pause the token at 0x... on Ethereum immediately.
+Pause the token at 0x... on Ethereum — we found a compliance issue.
 ```
 
 ```
-Mint 10000 more RWAB tokens to address 0x...
+Mint 10,000 RWAB to 0x... and then show me the updated token info.
 ```
 
-## Supported chains
+```
+Estimate the cost to deploy a mintable, burnable token on Arbitrum.
+```
 
-| Chain | Key | Native Token |
-|---|---|---|
-| Ethereum | `ethereum` | ETH |
-| Polygon | `polygon` | MATIC |
-| BNB Chain | `bnb` | BNB |
-| Arbitrum One | `arbitrum` | ETH |
-| Base | `base` | ETH |
-| Optimism | `optimism` | ETH |
-| Avalanche | `avalanche` | AVAX |
-| Sepolia (testnet) | `sepolia` | ETH |
+## Supported Chains
+
+| Chain | Key | Native Token | Type |
+|---|---|---|---|
+| Ethereum | `ethereum` | ETH | Mainnet |
+| Polygon | `polygon` | MATIC | Mainnet |
+| BNB Chain | `bnb` | BNB | Mainnet |
+| Arbitrum One | `arbitrum` | ETH | Mainnet |
+| Base | `base` | ETH | Mainnet |
+| Optimism | `optimism` | ETH | Mainnet |
+| Avalanche | `avalanche` | AVAX | Mainnet |
+| Sepolia | `sepolia` | ETH | Testnet |
+| Base Sepolia | `base-sepolia` | ETH | Testnet |
+| BNB Testnet | `bnb-testnet` | tBNB | Testnet |
+
+Chain aliases are supported: `eth`, `bsc`, `arb`, `avax`, `matic`, `testnet`, etc.
 
 ## Pricing
 
-$299 USD per token deployment, paid in native chain token at deployment time.
-No subscription. No API key. Pay per use.
+| Network | Cost |
+|---|---|
+| Any mainnet | $299 USD (paid in native token) |
+| Any testnet | < $0.01 |
 
-Testnet (Sepolia) deployments cost a fraction of a cent.
+No subscription. No API key. Pay per deployment.
 
 ## Security
 
-- Private key is loaded from environment variable only — never hardcoded
-- Keys are never logged or transmitted
-- All transactions require explicit tool calls — no autonomous signing
+- Private keys are loaded **only** from the `BITBOND_PRIVATE_KEY` environment variable
+- Keys are never logged, stored, or transmitted to any external service
+- All blockchain transactions require explicit tool calls — no autonomous signing
+- The Token Tool API receives only your public address, never your private key
+
+## License
+
+MIT — see [LICENSE](./LICENSE)
+
+## Links
+
+- [Bitbond Token Tool](https://tokentool.bitbond.com)
+- [Token Tool API Examples](https://github.com/bitbond/token-tool-api-examples)
+- [CertiK Audit Report](https://www.certik.com/projects/bitbond)
+- [Model Context Protocol](https://modelcontextprotocol.io)
