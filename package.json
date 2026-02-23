@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
+    "cli": "node src/cli.js",
     "test": "node test/e2e.js"
   },
   "keywords": [
@@ -37,7 +38,8 @@
     "zod": "^4.3.6"
   },
   "bin": {
-    "token-tool-mcp": "./src/index.js"
+    "token-tool-mcp": "./src/index.js",
+    "token-tool": "./src/cli.js"
   },
   "homepage": "https://tokentool.bitbond.com",
   "repository": {
