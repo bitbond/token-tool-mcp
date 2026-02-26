@@ -42,11 +42,12 @@ const REGISTRY_PATH = path.join(REGISTRY_DIR, 'registry.json');
 
 function loadRegistry() {
   try {
-    if (fs.existsSync(REGISTRY_PATH)) {
-      return JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
-    }
-  } catch {}
-  return [];
+    const data = fs.readFileSync(REGISTRY_PATH, 'utf8');
+    return JSON.parse(data);
+  } catch (e) {
+    if (e.code === 'ENOENT') return [];
+    throw new Error(`Failed to load registry at ${REGISTRY_PATH}: ${e.message}`);
+  }
 }
 
 function saveRegistry(registry) {
@@ -72,10 +73,33 @@ function getWallet(privateKey) {
   return new ethers.Wallet(privateKey);
 }
 
-async function getProvider(chain) {
-  const provider = new ethers.JsonRpcProvider(chain.rpc);
-  await provider.getBlockNumber(); // validate
-  return provider;
+function getProvider(chain) {
+  return new ethers.JsonRpcProvider(chain.rpc);
+}
+
+const TX_TIMEOUT_MS = 120_000; // 2 minutes
+
+async function waitForTx(tx, chain) {
+  let timer;
+  const receipt = await Promise.race([
+    tx.wait(),
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(
+        `Transaction timed out after ${TX_TIMEOUT_MS / 1000}s. It may still confirm later. ` +
+        `tx: ${tx.hash} — check: ${chain.explorer}/tx/${tx.hash}`
+      )), TX_TIMEOUT_MS);
+    }),
+  ]);
+  clearTimeout(timer);
+  return receipt;
+}
+
+async function getSignedContract(contractAddress, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
+  const wallet = getWallet(privateKey);
+  const provider = getProvider(chain);
+  const signer = wallet.connect(provider);
+  return { contract: new ethers.Contract(contractAddress, ERC20_ABI, signer), provider };
 }
 
 async function prepareDeployment(tokenConfig, chainId, deployerAddress) {
@@ -140,7 +164,7 @@ async function estimateCost(chainId, deployerAddress, options = {}) {
 
 async function deployToken(tokenConfig, chain, privateKey) {
   const wallet = getWallet(privateKey);
-  const provider = await getProvider(chain);
+  const provider = getProvider(chain);
   const signer = wallet.connect(provider);
 
   const balance = await provider.getBalance(wallet.address);
@@ -161,7 +185,7 @@ async function deployToken(tokenConfig, chain, privateKey) {
     value: totalWei,
   });
 
-  const receipt = await tx.wait();
+  const receipt = await waitForTx(tx, chain);
 
   // Extract deployed contract address from logs
   // The factory emits events from the newly created contract — find the address
@@ -177,6 +201,13 @@ async function deployToken(tokenConfig, chain, privateKey) {
   // Fallback: if all logs are from factory, check contractAddress on receipt
   if (!contractAddress && receipt.contractAddress) {
     contractAddress = receipt.contractAddress;
+  }
+
+  if (!contractAddress) {
+    throw new Error(
+      `Deployment transaction succeeded (tx: ${tx.hash}) but could not extract contract address from logs. ` +
+      `Check the transaction on the block explorer: ${chain.explorer}/tx/${tx.hash}`
+    );
   }
 
   const entry = {
@@ -208,7 +239,7 @@ async function deployToken(tokenConfig, chain, privateKey) {
 
 async function getTokenInfo(contractAddress, chain, privateKey) {
   contractAddress = validateAddress(contractAddress, 'Contract address');
-  const provider = await getProvider(chain);
+  const provider = getProvider(chain);
   const contract = new ethers.Contract(contractAddress, ERC20_ABI, provider);
 
   const [name, symbol, decimals, totalSupply] = await Promise.all([
@@ -244,62 +275,42 @@ async function getTokenInfo(contractAddress, chain, privateKey) {
 }
 
 async function transferTokens(contractAddress, to, amount, chain, privateKey) {
-  contractAddress = validateAddress(contractAddress, 'Contract address');
   to = validateAddress(to, 'Recipient address');
-  const wallet = getWallet(privateKey);
-  const provider = await getProvider(chain);
-  const signer = wallet.connect(provider);
-  const contract = new ethers.Contract(contractAddress, ERC20_ABI, signer);
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const decimals = await contract.decimals();
   const tx = await contract.transfer(to, ethers.parseUnits(amount.toString(), decimals));
-  await tx.wait();
+  await waitForTx(tx, chain);
   return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
 }
 
 async function mintTokens(contractAddress, to, amount, chain, privateKey) {
-  contractAddress = validateAddress(contractAddress, 'Contract address');
   to = validateAddress(to, 'Recipient address');
-  const wallet = getWallet(privateKey);
-  const provider = await getProvider(chain);
-  const signer = wallet.connect(provider);
-  const contract = new ethers.Contract(contractAddress, ERC20_ABI, signer);
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const decimals = await contract.decimals();
   const tx = await contract.mint(to, ethers.parseUnits(amount.toString(), decimals));
-  await tx.wait();
+  await waitForTx(tx, chain);
   return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
 }
 
 async function burnTokens(contractAddress, amount, chain, privateKey) {
-  contractAddress = validateAddress(contractAddress, 'Contract address');
-  const wallet = getWallet(privateKey);
-  const provider = await getProvider(chain);
-  const signer = wallet.connect(provider);
-  const contract = new ethers.Contract(contractAddress, ERC20_ABI, signer);
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const decimals = await contract.decimals();
   const tx = await contract.burn(ethers.parseUnits(amount.toString(), decimals));
-  await tx.wait();
+  await waitForTx(tx, chain);
   return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
 }
 
 async function pauseToken(contractAddress, chain, privateKey) {
-  contractAddress = validateAddress(contractAddress, 'Contract address');
-  const wallet = getWallet(privateKey);
-  const provider = await getProvider(chain);
-  const signer = wallet.connect(provider);
-  const contract = new ethers.Contract(contractAddress, ERC20_ABI, signer);
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const tx = await contract.pause();
-  await tx.wait();
+  await waitForTx(tx, chain);
   return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
 }
 
 async function unpauseToken(contractAddress, chain, privateKey) {
-  contractAddress = validateAddress(contractAddress, 'Contract address');
-  const wallet = getWallet(privateKey);
-  const provider = await getProvider(chain);
-  const signer = wallet.connect(provider);
-  const contract = new ethers.Contract(contractAddress, ERC20_ABI, signer);
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const tx = await contract.unpause();
-  await tx.wait();
+  await waitForTx(tx, chain);
   return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
 }
 
