@@ -86,6 +86,42 @@ const CHAINS = {
     factoryAddress: '0x4904Ba3148147D2f78b05a8446C01c48a7ABa4bd',
     testnet: true,
   },
+
+  // ── Solana ────────────────────────────────────────────────────────────────
+  solana: {
+    type: 'solana',
+    name: 'Solana',
+    cluster: 'mainnet-beta',
+    rpc: 'https://api.mainnet-beta.solana.com',
+    explorer: 'https://solscan.io',
+    symbol: 'SOL',
+  },
+  'solana-devnet': {
+    type: 'solana',
+    name: 'Solana Devnet',
+    cluster: 'devnet',
+    rpc: 'https://api.devnet.solana.com',
+    explorer: 'https://solscan.io',
+    symbol: 'SOL',
+    testnet: true,
+  },
+
+  // ── Stellar ───────────────────────────────────────────────────────────────
+  stellar: {
+    type: 'stellar',
+    name: 'Stellar',
+    network: 'mainnet',
+    explorer: 'https://stellar.expert/explorer/public',
+    symbol: 'XLM',
+  },
+  'stellar-testnet': {
+    type: 'stellar',
+    name: 'Stellar Testnet',
+    network: 'testnet',
+    explorer: 'https://stellar.expert/explorer/testnet',
+    symbol: 'XLM',
+    testnet: true,
+  },
 };
 
 // Aliases
@@ -108,6 +144,15 @@ const ALIASES = {
   'bnb test': 'bnb-testnet',
   'bsc testnet': 'bnb-testnet',
   'chapel': 'bnb-testnet',
+  // Solana
+  'sol': 'solana',
+  'solana mainnet': 'solana',
+  'solana devnet': 'solana-devnet',
+  'devnet': 'solana-devnet',
+  // Stellar
+  'xlm': 'stellar',
+  'stellar mainnet': 'stellar',
+  'stellar test': 'stellar-testnet',
 };
 
 function resolveChain(input) {

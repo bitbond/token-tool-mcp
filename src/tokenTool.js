@@ -313,5 +313,6 @@ module.exports = {
   pauseToken,
   unpauseToken,
   loadRegistry,
+  addToRegistry,
   ethers,
 };

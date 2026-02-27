@@ -36,6 +36,11 @@ const {
 } = require('./tokenTool');
 
 const PRIVATE_KEY = process.env.BITBOND_PRIVATE_KEY;
+const SOLANA_KEYPAIR = process.env.BITBOND_SOLANA_KEYPAIR;
+const STELLAR_SECRET = process.env.BITBOND_STELLAR_SECRET;
+
+const solana = require('./solana');
+const stellar = require('./stellar');
 
 const server = new McpServer({
   name: 'bitbond-token-tool',
@@ -93,7 +98,7 @@ server.tool(
 // ── Tool: deploy_token ──────────────────────────────────────────────────────
 server.tool(
   'deploy_token',
-  'Deploy a new ERC20 token using Bitbond Token Tool. CertiK-audited contracts, multi-chain support.',
+  'Deploy a new token using Bitbond Token Tool. Supports EVM chains (ERC20, CertiK-audited), Solana (SPL tokens), and Stellar (assets).',
   {
     name: z.string().describe('Token name (e.g. "My Token")'),
     symbol: z.string().describe('Token symbol/ticker (e.g. "MTK")'),
@@ -112,28 +117,37 @@ server.tool(
   },
   async (params) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
       const chain = resolveChain(params.chain);
-      const result = await deployToken(
-        {
-          name: params.name,
-          symbol: params.symbol,
-          initialSupply: params.supply,
-          decimals: params.decimals || '18',
-          mintable: params.mintable,
-          burnable: params.burnable,
-          pausable: params.pausable,
-          whitelist: params.whitelist,
-          blacklist: params.blacklist,
-          forceTransfer: params.force_transfer,
-          documentUri: params.document_uri,
-          maxSupply: params.max_supply,
-          discountCode: params.discount_code,
-        },
-        chain,
-        PRIVATE_KEY
-      );
-      return result;
+      const tokenConfig = {
+        name: params.name,
+        symbol: params.symbol,
+        supply: params.supply,
+        initialSupply: params.supply,
+        decimals: params.decimals || '18',
+        mintable: params.mintable,
+        burnable: params.burnable,
+        pausable: params.pausable,
+        whitelist: params.whitelist,
+        blacklist: params.blacklist,
+        forceTransfer: params.force_transfer,
+        documentUri: params.document_uri,
+        maxSupply: params.max_supply,
+        discountCode: params.discount_code,
+      };
+
+      if (chain.type === 'solana') {
+        if (!SOLANA_KEYPAIR) throw new Error('BITBOND_SOLANA_KEYPAIR env var not set (base58 secret key).');
+        return solana.deployToken(tokenConfig, chain, SOLANA_KEYPAIR);
+      }
+
+      if (chain.type === 'stellar') {
+        if (!STELLAR_SECRET) throw new Error('BITBOND_STELLAR_SECRET env var not set (Stellar secret key starting with S...).');
+        return stellar.deployToken(tokenConfig, chain, STELLAR_SECRET);
+      }
+
+      // EVM fallback
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      return deployToken(tokenConfig, chain, PRIVATE_KEY);
     })
 );
 
@@ -148,6 +162,17 @@ server.tool(
   async ({ contract_address, chain: chainInput }) =>
     run(async () => {
       const chain = resolveChain(chainInput);
+      if (chain.type === 'solana') {
+        return solana.getTokenInfo(contract_address, chain);
+      }
+      if (chain.type === 'stellar') {
+        // contract_address format: "CODE:ISSUER"
+        const [assetCode, issuerAddress] = contract_address.includes(':')
+          ? contract_address.split(':')
+          : [contract_address, null];
+        if (!issuerAddress) throw new Error('For Stellar, use format "ASSETCODE:ISSUER_ADDRESS"');
+        return stellar.getTokenInfo(assetCode, issuerAddress, chain);
+      }
       return getTokenInfo(contract_address, chain, PRIVATE_KEY);
     })
 );
@@ -182,8 +207,17 @@ server.tool(
   },
   async ({ contract_address, to, amount, chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
       const chain = resolveChain(chainInput);
+      if (chain.type === 'solana') {
+        if (!SOLANA_KEYPAIR) throw new Error('BITBOND_SOLANA_KEYPAIR env var not set');
+        return solana.transferTokens(contract_address, to, amount, chain, SOLANA_KEYPAIR);
+      }
+      if (chain.type === 'stellar') {
+        if (!STELLAR_SECRET) throw new Error('BITBOND_STELLAR_SECRET env var not set');
+        const [assetCode, issuerAddress] = contract_address.split(':');
+        return stellar.transferTokens(assetCode, issuerAddress, to, amount, chain, STELLAR_SECRET);
+      }
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
       return transferTokens(contract_address, to, amount, chain, PRIVATE_KEY);
     })
 );
@@ -264,8 +298,16 @@ server.tool(
   },
   async ({ chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
       const chain = resolveChain(chainInput);
+      if (chain.type === 'solana') {
+        if (!SOLANA_KEYPAIR) throw new Error('BITBOND_SOLANA_KEYPAIR env var not set');
+        return solana.getWalletInfo(chain, SOLANA_KEYPAIR);
+      }
+      if (chain.type === 'stellar') {
+        if (!STELLAR_SECRET) throw new Error('BITBOND_STELLAR_SECRET env var not set');
+        return stellar.getWalletInfo(chain, STELLAR_SECRET);
+      }
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
       const wallet = new ethers.Wallet(PRIVATE_KEY);
       const provider = new ethers.JsonRpcProvider(chain.rpc);
       const balance = await provider.getBalance(wallet.address);
