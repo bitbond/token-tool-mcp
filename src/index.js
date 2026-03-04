@@ -43,6 +43,11 @@ const server = new McpServer({
 });
 
 // ── Helper ──────────────────────────────────────────────────────────────────
+function requireKey() {
+  if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+  return PRIVATE_KEY;
+}
+
 function ok(data) {
   return { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] };
 }
@@ -55,10 +60,11 @@ async function run(fn) {
 }
 
 // ── Tool: list_chains ───────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'list_chains',
-  'List all supported blockchain networks for token deployment',
-  {},
+  {
+    description: 'List all supported blockchain networks for token deployment',
+  },
   async () => run(() => ({
     chains: listChains(),
     note: 'Use the "key" value (e.g. "ethereum", "polygon") in other tools.',
@@ -66,14 +72,16 @@ server.tool(
 );
 
 // ── Tool: estimate_cost ─────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'estimate_cost',
-  'Get the cost to deploy a token on a given chain before committing',
   {
-    chain: z.string().describe('Chain name (e.g. "ethereum", "polygon", "base", "sepolia")'),
-    mintable: z.boolean().optional().describe('Include mintable feature'),
-    burnable: z.boolean().optional().describe('Include burnable feature'),
-    pausable: z.boolean().optional().describe('Include pausable feature'),
+    description: 'Get the cost to deploy a token on a given chain before committing',
+    inputSchema: {
+      chain: z.string().describe('Chain name (e.g. "ethereum", "polygon", "base", "sepolia")'),
+      mintable: z.boolean().optional().describe('Include mintable feature'),
+      burnable: z.boolean().optional().describe('Include burnable feature'),
+      pausable: z.boolean().optional().describe('Include pausable feature'),
+    },
   },
   async ({ chain: chainInput, mintable, burnable, pausable }) =>
     run(async () => {
@@ -91,28 +99,30 @@ server.tool(
 );
 
 // ── Tool: deploy_token ──────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'deploy_token',
-  'Deploy a new ERC20 token using Bitbond Token Tool. CertiK-audited contracts, multi-chain support.',
   {
-    name: z.string().describe('Token name (e.g. "My Token")'),
-    symbol: z.string().describe('Token symbol/ticker (e.g. "MTK")'),
-    supply: z.string().describe('Initial token supply as a number (e.g. "1000000")'),
-    chain: z.string().describe('Chain to deploy on (e.g. "ethereum", "polygon", "base", "sepolia")'),
-    decimals: z.string().optional().default('18').describe('Token decimals (default: 18)'),
-    mintable: z.boolean().optional().describe('Allow minting more tokens after deployment'),
-    burnable: z.boolean().optional().describe('Allow burning/destroying tokens'),
-    pausable: z.boolean().optional().describe('Allow pausing all transfers (emergency stop)'),
-    whitelist: z.boolean().optional().describe('Enable whitelist — only approved addresses can hold tokens'),
-    blacklist: z.boolean().optional().describe('Enable blacklist — block specific addresses'),
-    force_transfer: z.boolean().optional().describe('Allow owner to force-transfer tokens (compliance)'),
-    document_uri: z.string().optional().describe('URI to legal document or prospectus'),
-    max_supply: z.string().optional().describe('Maximum total supply cap'),
-    discount_code: z.string().optional().describe('Bitbond discount code if you have one'),
+    description: 'Deploy a new ERC20 token using Bitbond Token Tool. CertiK-audited contracts, multi-chain support.',
+    inputSchema: {
+      name: z.string().describe('Token name (e.g. "My Token")'),
+      symbol: z.string().describe('Token symbol/ticker (e.g. "MTK")'),
+      supply: z.string().describe('Initial token supply as a number (e.g. "1000000")'),
+      chain: z.string().describe('Chain to deploy on (e.g. "ethereum", "polygon", "base", "sepolia")'),
+      decimals: z.string().optional().default('18').describe('Token decimals (default: 18)'),
+      mintable: z.boolean().optional().describe('Allow minting more tokens after deployment'),
+      burnable: z.boolean().optional().describe('Allow burning/destroying tokens'),
+      pausable: z.boolean().optional().describe('Allow pausing all transfers (emergency stop)'),
+      whitelist: z.boolean().optional().describe('Enable whitelist — only approved addresses can hold tokens'),
+      blacklist: z.boolean().optional().describe('Enable blacklist — block specific addresses'),
+      force_transfer: z.boolean().optional().describe('Allow owner to force-transfer tokens (compliance)'),
+      document_uri: z.string().optional().describe('URI to legal document or prospectus'),
+      max_supply: z.string().optional().describe('Maximum total supply cap'),
+      discount_code: z.string().optional().describe('Bitbond discount code if you have one'),
+    },
   },
   async (params) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(params.chain);
       const result = await deployToken(
         {
@@ -131,19 +141,21 @@ server.tool(
           discountCode: params.discount_code,
         },
         chain,
-        PRIVATE_KEY
+        pk
       );
       return result;
     })
 );
 
 // ── Tool: get_token_info ────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'get_token_info',
-  'Get live on-chain info for any token contract (name, symbol, supply, paused state, owner)',
   {
-    contract_address: z.string().describe('Token contract address (0x...)'),
-    chain: z.string().describe('Chain the token is on'),
+    description: 'Get live on-chain info for any token contract (name, symbol, supply, paused state, owner)',
+    inputSchema: {
+      contract_address: z.string().describe('Token contract address (0x...)'),
+      chain: z.string().describe('Chain the token is on'),
+    },
   },
   async ({ contract_address, chain: chainInput }) =>
     run(async () => {
@@ -153,11 +165,13 @@ server.tool(
 );
 
 // ── Tool: list_deployed_tokens ──────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'list_deployed_tokens',
-  'List all tokens deployed via this MCP server (local registry)',
   {
-    chain: z.string().optional().describe('Filter by chain (optional)'),
+    description: 'List all tokens deployed via this MCP server (local registry)',
+    inputSchema: {
+      chain: z.string().optional().describe('Filter by chain (optional)'),
+    },
   },
   async ({ chain: chainInput }) =>
     run(async () => {
@@ -171,102 +185,114 @@ server.tool(
 );
 
 // ── Tool: transfer_tokens ───────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'transfer_tokens',
-  'Transfer tokens from your wallet to another address',
   {
-    contract_address: z.string().describe('Token contract address'),
-    to: z.string().describe('Recipient wallet address'),
-    amount: z.string().describe('Amount to transfer (human-readable, e.g. "1000")'),
-    chain: z.string().describe('Chain the token is on'),
+    description: 'Transfer tokens from your wallet to another address',
+    inputSchema: {
+      contract_address: z.string().describe('Token contract address'),
+      to: z.string().describe('Recipient wallet address'),
+      amount: z.string().describe('Amount to transfer (human-readable, e.g. "1000")'),
+      chain: z.string().describe('Chain the token is on'),
+    },
   },
   async ({ contract_address, to, amount, chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(chainInput);
-      return transferTokens(contract_address, to, amount, chain, PRIVATE_KEY);
+      return transferTokens(contract_address, to, amount, chain, pk);
     })
 );
 
 // ── Tool: mint_tokens ───────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'mint_tokens',
-  'Mint additional tokens (only works if token was deployed with mintable=true)',
   {
-    contract_address: z.string().describe('Token contract address'),
-    to: z.string().describe('Address to receive minted tokens'),
-    amount: z.string().describe('Amount to mint (human-readable)'),
-    chain: z.string().describe('Chain the token is on'),
+    description: 'Mint additional tokens (only works if token was deployed with mintable=true)',
+    inputSchema: {
+      contract_address: z.string().describe('Token contract address'),
+      to: z.string().describe('Address to receive minted tokens'),
+      amount: z.string().describe('Amount to mint (human-readable)'),
+      chain: z.string().describe('Chain the token is on'),
+    },
   },
   async ({ contract_address, to, amount, chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(chainInput);
-      return mintTokens(contract_address, to, amount, chain, PRIVATE_KEY);
+      return mintTokens(contract_address, to, amount, chain, pk);
     })
 );
 
 // ── Tool: burn_tokens ───────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'burn_tokens',
-  'Burn/destroy tokens from your balance (only works if token was deployed with burnable=true)',
   {
-    contract_address: z.string().describe('Token contract address'),
-    amount: z.string().describe('Amount to burn (human-readable)'),
-    chain: z.string().describe('Chain the token is on'),
+    description: 'Burn/destroy tokens from your balance (only works if token was deployed with burnable=true)',
+    inputSchema: {
+      contract_address: z.string().describe('Token contract address'),
+      amount: z.string().describe('Amount to burn (human-readable)'),
+      chain: z.string().describe('Chain the token is on'),
+    },
   },
   async ({ contract_address, amount, chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(chainInput);
-      return burnTokens(contract_address, amount, chain, PRIVATE_KEY);
+      return burnTokens(contract_address, amount, chain, pk);
     })
 );
 
 // ── Tool: pause_token ───────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'pause_token',
-  'Pause all token transfers — emergency stop (only works if pausable=true)',
   {
-    contract_address: z.string().describe('Token contract address'),
-    chain: z.string().describe('Chain the token is on'),
+    description: 'Pause all token transfers — emergency stop (only works if pausable=true)',
+    inputSchema: {
+      contract_address: z.string().describe('Token contract address'),
+      chain: z.string().describe('Chain the token is on'),
+    },
   },
   async ({ contract_address, chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(chainInput);
-      return pauseToken(contract_address, chain, PRIVATE_KEY);
+      return pauseToken(contract_address, chain, pk);
     })
 );
 
 // ── Tool: unpause_token ─────────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'unpause_token',
-  'Resume token transfers after a pause',
   {
-    contract_address: z.string().describe('Token contract address'),
-    chain: z.string().describe('Chain the token is on'),
+    description: 'Resume token transfers after a pause',
+    inputSchema: {
+      contract_address: z.string().describe('Token contract address'),
+      chain: z.string().describe('Chain the token is on'),
+    },
   },
   async ({ contract_address, chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(chainInput);
-      return unpauseToken(contract_address, chain, PRIVATE_KEY);
+      return unpauseToken(contract_address, chain, pk);
     })
 );
 
 // ── Tool: get_wallet_info ───────────────────────────────────────────────────
-server.tool(
+server.registerTool(
   'get_wallet_info',
-  'Get the deployer wallet address and balance on a given chain',
   {
-    chain: z.string().describe('Chain to check balance on'),
+    description: 'Get the deployer wallet address and balance on a given chain',
+    inputSchema: {
+      chain: z.string().describe('Chain to check balance on'),
+    },
   },
   async ({ chain: chainInput }) =>
     run(async () => {
-      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const pk = requireKey();
       const chain = resolveChain(chainInput);
-      const wallet = new ethers.Wallet(PRIVATE_KEY);
+      const wallet = new ethers.Wallet(pk);
       const provider = new ethers.JsonRpcProvider(chain.rpc);
       const balance = await provider.getBalance(wallet.address);
       return {
