@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/token-tool-mcp.svg)](https://www.npmjs.com/package/token-tool-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js ≥18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
-[![12 Networks](https://img.shields.io/badge/networks-12-blue)](#supported-networks)
+[![10 Networks](https://img.shields.io/badge/networks-10-blue)](#supported-networks)
 [![CertiK Audited](https://img.shields.io/badge/contracts-CertiK%20audited-green)](https://tokentool.bitbond.com)
 
 **Deploy and manage compliant tokens from Claude, Cursor, or any AI agent — by typing a sentence.**
