@@ -118,6 +118,7 @@ async function deployToken(tokenConfig, chain, secretKey) {
     symbol: assetCode,
     supply,
     owner: issuerKeypair.publicKey(),
+    isTestnet: chain.testnet || false,
     explorerUrl: explorerUrl(assetCode, issuerKeypair.publicKey(), networkName),
     deployedAt: new Date().toISOString(),
   };

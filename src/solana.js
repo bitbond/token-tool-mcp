@@ -104,6 +104,7 @@ async function deployToken(tokenConfig, chain, base58Key) {
     supply: supply.toString(),
     decimals,
     owner: payer.publicKey.toBase58(),
+    isTestnet: chain.testnet || false,
     explorerUrl: explorerUrl(mint.toBase58(), cluster),
     deployedAt: new Date().toISOString(),
   };

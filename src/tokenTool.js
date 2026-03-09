@@ -237,6 +237,7 @@ async function deployToken(tokenConfig, chain, privateKey) {
       blacklist: tokenConfig.blacklist || false,
     },
     costUsd: totalUSD,
+    isTestnet: chain.testnet || false,
     deployedAt: new Date().toISOString(),
     explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
     tokenUrl: contractAddress ? `${chain.explorer}/token/${contractAddress}` : null,
@@ -287,18 +288,41 @@ async function transferTokens(contractAddress, to, amount, chain, privateKey) {
   to = validateAddress(to, 'Recipient address');
   const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const decimals = await contract.decimals();
-  const tx = await contract.transfer(to, ethers.parseUnits(amount.toString(), decimals));
-  await waitForTx(tx, chain);
-  return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
+  try {
+    const tx = await contract.transfer(to, ethers.parseUnits(amount.toString(), decimals));
+    await waitForTx(tx, chain);
+    return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
+  } catch (e) {
+    if (e.data && e.data.includes('ab0b880c')) {
+      throw new Error(`Recipient ${to} is not whitelisted. Add them to the whitelist first using add_to_whitelist.`);
+    }
+    if (e.data && e.data.includes('8a0be586')) {
+      throw new Error(`Sender is not whitelisted. Add your address to the whitelist first using add_to_whitelist.`);
+    }
+    if (e.data && e.data.includes('d93c0665')) {
+      throw new Error(`Token is paused. Unpause it first using unpause_token.`);
+    }
+    throw e;
+  }
 }
 
 async function mintTokens(contractAddress, to, amount, chain, privateKey) {
   to = validateAddress(to, 'Recipient address');
   const { contract } = await getSignedContract(contractAddress, chain, privateKey);
   const decimals = await contract.decimals();
-  const tx = await contract.mint(to, ethers.parseUnits(amount.toString(), decimals));
-  await waitForTx(tx, chain);
-  return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
+  try {
+    const tx = await contract.mint(to, ethers.parseUnits(amount.toString(), decimals));
+    await waitForTx(tx, chain);
+    return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
+  } catch (e) {
+    if (e.data && e.data.includes('ab0b880c')) {
+      throw new Error(`Recipient ${to} is not whitelisted. Add them to the whitelist first using add_to_whitelist.`);
+    }
+    if (e.data && e.data.includes('8a0be586')) {
+      throw new Error(`Sender is not whitelisted. Add your address to the whitelist first using add_to_whitelist.`);
+    }
+    throw e;
+  }
 }
 
 async function burnTokens(contractAddress, amount, chain, privateKey) {
