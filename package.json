@@ -47,6 +47,6 @@
   "homepage": "https://tokentool.bitbond.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bitbond/token-tool-mcp"
+    "url": "https://github.com/thendrix-eng/token-tool-mcp"
   }
 }
