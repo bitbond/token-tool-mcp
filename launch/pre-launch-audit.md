@@ -17,7 +17,7 @@
 
 ### Code & Repo
 - **11 MCP tools confirmed** — `server.tool()` called exactly 11 times in `src/index.js`. Matches all docs.
-- **14 chains in code** (ethereum, polygon, bnb, arbitrum, base, optimism, avalanche, sepolia, base-sepolia, bnb-testnet, solana, solana-devnet, stellar, stellar-testnet). Docs say "12 networks" — see ⚠️ below.
+- **14 chains in code** (ethereum, polygon, bnb, arbitrum, base, optimism, avalanche, sepolia, base-sepolia, bnb-testnet, solana, solana-devnet, stellar, stellar-testnet). Docs say "10 networks" — see ⚠️ below.
 - **Solana + Stellar adapters exist** — `src/solana.js` and `src/stellar.js` present with real implementations.
 - **package.json** — v1.1.0, MIT, Node ≥18, proper `bin` entries for both `token-tool-mcp` and `token-tool`, all dependencies listed.
 - **Demo assets ready** — `assets/` has demo.svg, demo.gif, demo-final.gif, demo-final.mp4, demo-hq.gif. Multiple formats available.

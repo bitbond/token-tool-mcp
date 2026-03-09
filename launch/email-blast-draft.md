@@ -13,7 +13,7 @@
 
 TokenTool is now available as an MCP server — deploy and manage tokens directly from Claude, Cursor, or any AI agent.
 
-Same CertiK-audited contracts. Same compliance features. Same 12 networks. Now you can type "deploy a token" and it happens.
+Same CertiK-audited contracts. Same compliance features. Same 10 networks. Now you can type "deploy a token" and it happens.
 
 **What's new:**
 - 17 tools covering the full lifecycle — deploy, mint, burn, pause, whitelist, blacklist, transfer
@@ -37,7 +37,7 @@ Open source, MIT licensed. Try it on Sepolia first.
 
 If you've used TokenTool to deploy tokens through our web UI, you can now do the same thing by talking to an AI agent.
 
-We just open-sourced TokenTool MCP — a server that connects Claude, Cursor, and other AI tools directly to TokenTool's infrastructure. Same CertiK-audited contracts, same compliance features, same 12 networks.
+We just open-sourced TokenTool MCP — a server that connects Claude, Cursor, and other AI tools directly to TokenTool's infrastructure. Same CertiK-audited contracts, same compliance features, same 10 networks.
 
 **Here's what it looks like:**
 

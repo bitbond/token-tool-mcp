@@ -68,7 +68,7 @@ Tools:
 
 **awesome-mcp-servers PR text:**
 ```
-- [token-tool-mcp](https://github.com/thendrix-eng/token-tool-mcp) — Deploy and manage CertiK-audited ERC-20 tokens with compliance features (whitelist, blacklist, pausable) from Claude, Cursor, or any AI agent. 12 networks.
+- [token-tool-mcp](https://github.com/thendrix-eng/token-tool-mcp) — Deploy and manage CertiK-audited ERC-20 tokens with compliance features (whitelist, blacklist, pausable) from Claude, Cursor, or any AI agent. 10 networks.
 ```
 
 ### Phase 2: Show HN — 4:00 PM CET / 10:00 AM EST

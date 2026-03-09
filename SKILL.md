@@ -1,6 +1,6 @@
 ---
 name: token-tool-mcp
-description: Deploy and manage compliant tokens on 12 blockchain networks via Bitbond TokenTool MCP (17 tools). Use when user asks to deploy a token, create an ERC-20, issue a security token, tokenize an asset, mint tokens, burn tokens, pause token transfers, create an SPL token on Solana, issue a Stellar asset, estimate deployment cost, check token info, list deployed tokens, set up whitelist or blacklist compliance, manage whitelist/blacklist addresses, check compliance status, or manage token lifecycle. Supports EVM chains, Solana, and Stellar with CertiK-audited contracts.
+description: Deploy and manage compliant tokens on 10 blockchain networks via Bitbond TokenTool MCP (17 tools). Use when user asks to deploy a token, create an ERC-20, issue a security token, tokenize an asset, mint tokens, burn tokens, pause token transfers, create an SPL token on Solana, issue a Stellar asset, estimate deployment cost, check token info, list deployed tokens, set up whitelist or blacklist compliance, manage whitelist/blacklist addresses, check compliance status, or manage token lifecycle. Supports EVM chains, Solana, and Stellar with CertiK-audited contracts.
 ---
 
 # TokenTool MCP

@@ -132,7 +132,7 @@ For enterprise deployments requiring additional security controls, hardware wall
 
 ## Supported Networks
 
-TokenTool MCP supports **12 blockchain networks** at launch:
+TokenTool MCP supports **10 blockchain networks** at launch:
 
 **EVM Mainnets**
 - Ethereum

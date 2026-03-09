@@ -66,12 +66,12 @@ JSON config is copy-pasteable. `npx -y` flag present. Good.
 ## 2. Twitter Thread
 
 ### Tweet 1 (Hook)
-> "TokenTool MCP is live. Tell Claude to deploy a CertiK-audited token on any of 12 chains. It does it in 30 seconds."
+> "TokenTool MCP is live. Tell Claude to deploy a CertiK-audited token on any of 10 chains. It does it in 30 seconds."
 
 **Stop-scrolling power: 7/10.** It's clear and direct but could be punchier. The "TokenTool MCP is live" opening is a bit cold for people who don't know what TokenTool is.
 
 **Suggested edit for higher hook:**
-> "You can now deploy a CertiK-audited token on 12 chains by typing a sentence to Claude. TokenTool MCP is live. Open source. 🧵"
+> "You can now deploy a CertiK-audited token on 10 chains by typing a sentence to Claude. TokenTool MCP is live. Open source. 🧵"
 
 This puts the capability first, name second. More stopping power for people who aren't already following TokenTool.
 

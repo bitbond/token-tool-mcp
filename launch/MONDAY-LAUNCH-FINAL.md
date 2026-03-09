@@ -65,7 +65,7 @@ Record actual contract addresses for demo script update.
 
 **awesome-mcp-servers PR entry:**
 ```
-- [token-tool-mcp](https://github.com/thendrix-eng/token-tool-mcp) — Deploy and manage CertiK-audited ERC-20 tokens with compliance features (whitelist, blacklist, pausable) from Claude, Cursor, or any AI agent. 12 networks.
+- [token-tool-mcp](https://github.com/thendrix-eng/token-tool-mcp) — Deploy and manage CertiK-audited ERC-20 tokens with compliance features (whitelist, blacklist, pausable) from Claude, Cursor, or any AI agent. 10 networks.
 ```
 
 ### 4:00 PM CET — Show HN
@@ -120,7 +120,7 @@ To existing TokenTool web users:
 
 We just open-sourced an MCP server that deploys CertiK-audited ERC-20 tokens with compliance features (whitelist, blacklist, pausable, force transfer) from Claude, Cursor, or any MCP client.
 
-11 tools covering deploy → mint → burn → pause → transfer → query. 12 chains. stdio transport. Private key stays local.
+11 tools covering deploy → mint → burn → pause → transfer → query. 10 chains. stdio transport. Private key stays local.
 
 TokenTool has powered 8,300+ real-world deployments since 2020. The MCP server wraps the same production infrastructure — same CertiK-audited contracts, same reliability.
 
@@ -139,7 +139,7 @@ We've been running TokenTool (tokentool.bitbond.com) since 2020 — 8,300+ deplo
 
 Why this matters for Ethereum: RWA issuers and institutional platforms need compliance features at the contract level. This makes that infrastructure programmable via AI agents — useful for platforms that issue tokens at scale.
 
-Not a generic deployer. Specifically built for tokens that need investor whitelists, transfer restrictions, and emergency controls. 12 networks including Ethereum mainnet, Polygon, Arbitrum, Base, Optimism.
+Not a generic deployer. Specifically built for tokens that need investor whitelists, transfer restrictions, and emergency controls. 10 networks including Ethereum mainnet, Polygon, Arbitrum, Base, Optimism.
 
 Testnet is free. Mainnet is $299/token (same as web UI).
 
@@ -154,7 +154,7 @@ Built an MCP server that works with any MCP-compatible local client. Deploy Cert
 
 stdio transport, no cloud dependency, no HTTP listener. Private key stays local in env var (same approach as Hardhat/Foundry). Works with Claude Desktop, Cursor, VS Code, any MCP client.
 
-11 tools: deploy, mint, burn, pause, transfer, query across 12 chains. Testnet is free.
+11 tools: deploy, mint, burn, pause, transfer, query across 10 chains. Testnet is free.
 
 Interesting for anyone building autonomous agent systems that need on-chain capabilities without relying on external APIs.
 

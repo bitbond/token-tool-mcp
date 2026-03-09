@@ -8,7 +8,7 @@
 
 TokenTool MCP is live.
 
-Tell Claude to deploy a CertiK-audited token on any of 12 chains. It does it in 30 seconds.
+Tell Claude to deploy a CertiK-audited token on any of 10 chains. It does it in 30 seconds.
 
 Whitelist, blacklist, pausable, force transfer — compliance built in from the first prompt.
 
@@ -111,7 +111,7 @@ Solana ✅
 Stellar ✅
 + 3 testnets
 
-12 networks. One MCP server.
+10 networks. One MCP server.
 
 github.com/thendrix-eng/token-tool-mcp
 

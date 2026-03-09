@@ -11,7 +11,7 @@ AI agents can now deploy, manage, and query tokenized assets directly through Bi
 
 What the TokenTool MCP server enables:
 
-→ Deploy CertiK-audited tokens on 12 networks (Ethereum, Polygon, Arbitrum, Base, Solana, Stellar, and more)
+→ Deploy CertiK-audited tokens on 10 networks (Ethereum, Polygon, Arbitrum, Base, Solana, Stellar, and more)
 → Built-in compliance: whitelist, blacklist, pausable, force transfer, document URI
 → Full lifecycle management: mint, burn, pause, transfer, query — all via natural language
 → Works with Claude Desktop, Cursor, VS Code, and any MCP-compatible AI client

@@ -19,7 +19,7 @@ TokenTool MCP wraps our existing TokenTool infrastructure (8,300+ deployments, C
 
 | Item | Status | Notes |
 |------|--------|-------|
-| MCP server code | ✅ Done | 11 tools, 12 chains, full lifecycle |
+| MCP server code | ✅ Done | 11 tools, 10 chains, full lifecycle |
 | README (v2, demo-first) | ⚠️ Needs swap | v2-README.md exists, needs to replace current README.md |
 | npm publish | ⚠️ NOT DONE | `token-tool-mcp` not yet on npm — must do before launch |
 | GitHub repo public | ⚠️ Unknown | Need to confirm/set public before launch |
@@ -70,7 +70,7 @@ These are warm/targeted outreach targets for the MCP launch — developer advoca
 | # | Person | Role | Why / Hook |
 |---|--------|------|-----------|
 | 1 | **David Soria Parra** | MCP Co-Creator @ Anthropic | Built the protocol — reaching out to the creator of MCP with a real-world use case is a strong signal. Will likely engage. |
-| 2 | **Patrick Hughes** | Sr. Dev Advocate @ Base (Coinbase) | Base is one of our 12 chains. "Your users can now deploy tokens on Base via Claude" — direct product fit. |
+| 2 | **Patrick Hughes** | Sr. Dev Advocate @ Base (Coinbase) | Base is one of our 10 chains. "Your users can now deploy tokens on Base via Claude" — direct product fit. |
 | 3 | **Daniel Ortega** | Developer Relations @ Arbitrum Foundation | Same angle as Base — Arbitrum is supported. Dev advocates love showcasing third-party tooling. |
 | 4 | **Anthony Sassano** | Founder @ The Daily Gwei (19K+ newsletter) | Ethereum-native newsletter, covers tooling and infrastructure. Short note + repo link. |
 | 5 | **Jess Ramos** | Dev Advocate & AI Creator (450K+) | Builds Claude workflows, huge audience, covers exactly this kind of "Claude does X" content. |
@@ -111,7 +111,7 @@ Title: *"Introducing TokenTool MCP: Deploy Compliant Tokens with AI Agents"*
 ## Numbers to Know
 
 - **8,300+** token deployments on TokenTool since 2020
-- **12 chains**: ETH, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche, Solana, Stellar + 3 testnets
+- **10 chains**: ETH, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche, Solana, Stellar + 3 testnets
 - **11 MCP tools**: deploy, mint, burn, pause, unpause, transfer, query, estimate cost, list chains
 - **$299** per mainnet deployment (same as web UI — testnet free)
 - **CertiK audited** contracts

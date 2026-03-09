@@ -289,7 +289,7 @@ Issue filers are 10x more valuable than stargazers. They've actually tried the t
 ### Messaging Adaptation Per Community
 
 **MCP Discord / Anthropic Discord:**
-> Just shipped TokenTool MCP — the first MCP server for compliant token issuance. CertiK-audited ERC-20s with whitelist, blacklist, pausable, force transfer. 12 chains. `npx -y token-tool-mcp` and you're up.
+> Just shipped TokenTool MCP — the first MCP server for compliant token issuance. CertiK-audited ERC-20s with whitelist, blacklist, pausable, force transfer. 10 chains. `npx -y token-tool-mcp` and you're up.
 >
 > Built it because MCP servers exist for payments, trading, and banking — but nothing for token deployment with compliance features.
 >
@@ -302,7 +302,7 @@ Issue filers are 10x more valuable than stargazers. They've actually tried the t
 >
 > We just open-sourced an MCP server that deploys CertiK-audited ERC-20 tokens with compliance features (whitelist, blacklist, pausable) from Claude, Cursor, or any MCP client.
 >
-> 11 tools covering deploy → mint → burn → pause → transfer → query. 12 chains. stdio transport.
+> 11 tools covering deploy → mint → burn → pause → transfer → query. 10 chains. stdio transport.
 >
 > What we found building it: [1–2 interesting technical insights from the build process].
 >
@@ -324,7 +324,7 @@ Issue filers are 10x more valuable than stargazers. They've actually tried the t
 *Do NOT lead with "AI" in r/ethereum. Lead with compliance and the Ethereum use case. AI is the delivery mechanism, not the story.*
 
 **ElizaOS Discord:**
-> Hey — just shipped an MCP server that lets agents deploy and manage ERC-20 tokens with compliance features. 12 chains, CertiK-audited.
+> Hey — just shipped an MCP server that lets agents deploy and manage ERC-20 tokens with compliance features. 10 chains, CertiK-audited.
 >
 > Thinking about ElizaOS integration — imagine an agent that can autonomously create tokens for DAOs, manage supply, whitelist holders, pause trading if something goes wrong. All from natural language.
 >
@@ -431,7 +431,7 @@ Don't go dark. Check HN and Twitter once on Saturday, once on Sunday. Reply to a
 **Channel:** Twitter DM.
 
 **Message:**
-> Hey Zeneca — we just launched TokenTool MCP, the first MCP server for compliant token issuance (CertiK-audited, 12 chains). Got some good traction on HN and Twitter this week.
+> Hey Zeneca — we just launched TokenTool MCP, the first MCP server for compliant token issuance (CertiK-audited, 10 chains). Got some good traction on HN and Twitter this week.
 >
 > Thought it might be relevant for your weekly roundup — it's at the intersection of AI agents and on-chain infrastructure. Here's the repo: [link]
 >

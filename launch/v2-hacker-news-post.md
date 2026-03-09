@@ -49,7 +49,7 @@ No data goes to Bitbond's servers. The smart contract factory is already deploye
 
 **Technical details**
 
-- 12 networks: Ethereum, Polygon, BNB Chain, Arbitrum, Base, Optimism, Avalanche, Solana, Stellar + 3 testnets
+- 10 networks: Ethereum, Polygon, BNB Chain, Arbitrum, Base, Optimism, Avalanche, Solana, Stellar + 3 testnets
 - stdio transport — Claude Desktop, Cursor, VS Code, Claude Code, OpenClaw, any MCP-compatible client
 - Private key from env var only, never logged or transmitted
 - $299 flat fee per mainnet deployment (same price as the web UI at tokentool.bitbond.com — testnet is effectively free)

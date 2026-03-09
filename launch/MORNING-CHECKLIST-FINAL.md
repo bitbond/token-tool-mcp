@@ -65,7 +65,7 @@ npx -y token-tool-mcp
 | smithery.yaml committed | ✅ | Commit ea51856 |
 | Sepolia test deployments working | ✅ | 9 deployments in registry |
 | "12K" remnants removed from all v2 docs | ✅ | Grepped — clean |
-| All docs consistent (8,300+ / 11 tools / 12 chains / $299) | ✅ | Cross-checked all 5 docs |
+| All docs consistent (8,300+ / 11 tools / 10 chains / $299) | ✅ | Cross-checked all 5 docs |
 | HN post ready | ✅ | v2-hacker-news-post.md |
 | Twitter thread ready (6 tweets) | ✅ | v2-twitter-thread.md |
 | LinkedIn post ready | ✅ | v2-linkedin-post.md |

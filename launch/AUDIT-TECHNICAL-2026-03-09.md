@@ -31,11 +31,11 @@ Both blockers are expected manual steps. Everything else is in place. The codeba
 | `chains.js` entries | **14** | 10 EVM + 2 Solana + 2 Stellar |
 | README badge | "12 Networks" | Counts distinct networks (not testnet variants) |
 | README body | "EVM (10) + Non-EVM (2)" | Lists all 14 explicitly — transparent |
-| HN post | "12 networks" | Matches badge |
-| Twitter | "12 chains" | Matches badge |
-| LinkedIn | "12 networks" | Matches badge |
+| HN post | "10 networks" | Matches badge |
+| Twitter | "10 chains" | Matches badge |
+| LinkedIn | "10 networks" | Matches badge |
 
-**Assessment:** ✅ ACCEPTABLE. Docs say "12 networks" counting Sepolia/Base Sepolia/BNB Testnet as testnet variants of their parent chains, while also grouping Solana Devnet under Solana. The README body explicitly lists all 14 entries, so nobody is being misled. If someone runs `list_chains` they'll see 14 entries — the README explains this clearly. Keep "12" in marketing materials.
+**Assessment:** ✅ ACCEPTABLE. Docs say "10 networks" counting Sepolia/Base Sepolia/BNB Testnet as testnet variants of their parent chains, while also grouping Solana Devnet under Solana. The README body explicitly lists all 14 entries, so nobody is being misled. If someone runs `list_chains` they'll see 14 entries — the README explains this clearly. Keep "12" in marketing materials.
 
 **Risk:** LOW. Someone may comment "I see 14 in the code." Response: "12 distinct networks + testnet variants of 3 of them."
 
