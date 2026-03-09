@@ -87,6 +87,15 @@ const CHAINS = {
     testnet: true,
   },
 
+  peaq: {
+    id: 3338,
+    name: 'Peaq',
+    rpc: 'https://peaq.api.onfinality.io/public',
+    explorer: 'https://peaq.subscan.io',
+    symbol: 'PEAQ',
+    factoryAddress: '0x4904Ba3148147D2f78b05a8446C01c48a7ABa4bd',
+  },
+
   // ── Solana ────────────────────────────────────────────────────────────────
   solana: {
     type: 'solana',
@@ -144,6 +153,9 @@ const ALIASES = {
   'bnb test': 'bnb-testnet',
   'bsc testnet': 'bnb-testnet',
   'chapel': 'bnb-testnet',
+  // Peaq
+  'peaq network': 'peaq',
+  'depin': 'peaq',
   // Solana
   'sol': 'solana',
   'solana mainnet': 'solana',
