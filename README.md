@@ -113,7 +113,7 @@ Once connected, try these:
 
 ## Tools
 
-16 tools across the full token lifecycle:
+17 tools across the full token lifecycle:
 
 | Tool | Description |
 |------|-------------|
@@ -129,6 +129,7 @@ Once connected, try these:
 | `transfer_tokens` | Send tokens to any address |
 | `get_wallet_info` | Deployer wallet address and native balance |
 | `add_to_whitelist` | Add addresses to token whitelist (batch supported) |
+| `remove_from_whitelist` | Remove addresses from token whitelist |
 | `get_whitelist` | View whitelist status and all whitelisted addresses |
 | `add_to_blacklist` | Block an address from token interactions |
 | `remove_from_blacklist` | Unblock a previously blacklisted address |
