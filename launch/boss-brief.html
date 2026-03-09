@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Tool MCP — Launch Brief</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 24px; color: #1a1a1a; background: #f9f9f9; }
+  h1 { color: #111; border-bottom: 3px solid #2563eb; padding-bottom: 12px; }
+  h2 { color: #2563eb; margin-top: 40px; }
+  h3 { color: #333; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
+  th { background: #2563eb; color: white; }
+  tr:nth-child(even) { background: #f0f4ff; }
+  code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; color: inherit; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+  li { margin: 4px 0; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 32px; }
+  .tab { padding: 10px 20px; border-radius: 6px; cursor: pointer; background: #e5e7eb; border: none; font-size: 15px; font-weight: 600; }
+  .tab.active { background: #2563eb; color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  strong { color: #111; }
+  .badge-ok { color: #16a34a; }
+  .badge-warn { color: #d97706; }
+  .badge-red { color: #dc2626; }
+</style>
+</head>
+<body>
+<div class="tabs">
+  <button class="tab active" onclick="show('brief', this)">📋 Launch Brief</button>
+  <button class="tab" onclick="show('blog', this)">📝 Blog Post</button>
+</div>
+
+<div id="brief" class="section active">
+<h1>Token Tool MCP — Launch Brief</h1>
+<strong>Prepared: March 6, 2026 | For: Boss meeting</strong>
+
+<hr>
+
+<h2>The One-Line Summary</h2>
+We've built the first MCP server for compliant token issuance — anyone using Claude, Cursor, or any AI agent can now deploy a CertiK-audited token in 30 seconds by typing a sentence. It's open source, live, and ready to launch.
+
+<hr>
+
+<h2>What Is It (30-second version)</h2>
+MCP (Model Context Protocol) is Anthropic's open standard that lets AI agents use real-world tools. Stripe, Alpaca, and Griffin already have MCP servers. <strong>We built one for token issuance</strong> — the first of its kind.
+<p>Token Tool MCP wraps our existing Token Tool infrastructure (8,300+ deployments, CertiK-audited) and makes it accessible to any AI agent. The barrier to deploying a compliant token drops from "hire a developer" to "type a sentence."
+
+<hr>
+
+<h2>Launch Status — What's Ready ✅ / What's Needed ⚠️</h2>
+
+<table>
+<tr><th>Item</th><th>Status</th><th>Notes</th></tr>
+<tr><td>MCP server code</td><td>✅ Done</td><td>11 tools, 12 chains, full lifecycle</td></tr>
+<tr><td>README (v2, demo-first)</td><td>⚠️ Needs swap</td><td>v2-README.md exists, needs to replace current README.md</td></tr>
+<tr><td>npm publish</td><td>⚠️ NOT DONE</td><td><code>token-tool-mcp</code> not yet on npm — must do before launch</td></tr>
+<tr><td>GitHub repo public</td><td>⚠️ Unknown</td><td>Need to confirm/set public before launch</td></tr>
+<tr><td>Smithery.yaml</td><td>✅ Ready</td><td>File exists, ready to push</td></tr>
+<tr><td>Demo GIF</td><td>✅ Exists</td><td><code>assets/demo-final.gif</code> ready</td></tr>
+<tr><td>Demo video mashup</td><td>✅ Done today</td><td>30s mashup: cloud desktop + terminal + Telegram</td></tr>
+<tr><td>HN post</td><td>✅ Written</td><td><code>launch/v2-hacker-news-post.md</code></td></tr>
+<tr><td>Twitter thread</td><td>✅ Written</td><td><code>launch/v2-twitter-thread.md</code> — 6 tweets</td></tr>
+<tr><td>LinkedIn post</td><td>✅ Written</td><td><code>launch/v2-linkedin-post.md</code></td></tr>
+<tr><td>Reddit posts</td><td>✅ Written</td><td>3 posts: r/mcp, r/ethereum, r/LocalLLaMA in MONDAY-LAUNCH-FINAL.md</td></tr>
+<tr><td>Registry submission list</td><td>✅ Ready</td><td>6 registries: awesome-mcp, official registry, mcp.so, Glama, PulseMCP, FastMCP</td></tr>
+<tr><td>Blog post</td><td>✅ Done today</td><td>See <code>launch/blog-post-mcp.md</code></td></tr>
+<tr><td>Outreach targets (MCP)</td><td>✅ List ready</td><td>5-10 targets below</td></tr>
+<tr><td>Launch date</td><td>⚠️ TBD</td><td>Was Monday March 9 — confirm today</td></tr>
+</table>
+
+<hr>
+
+<h2>Must-Do Before Launch (Pre-flight checklist)</h2>
+
+<li><strong><code>npm publish</code></strong> — run from <code>~/clawd/projects/token-tool-mcp</code> with Bitbond npm credentials</li>
+<li><strong>Swap README</strong> — <code>cp launch/v2-README.md README.md && git commit -m "v2 README" && git push</code></li>
+<li><strong>Make GitHub repo public</strong> — github.com/thendrix-eng/token-tool-mcp → Settings → Danger Zone → Make Public</li>
+<li><strong>Push smithery.yaml</strong> — already in launch folder, needs commit + push</li>
+<li><strong>Test full flow on Sepolia</strong> — deploy → get_token_info → mint → pause. Get real contract addresses for demo script.</li>
+<li><strong>Update demo script</strong> with real Sepolia contract addresses from test</li>
+
+<hr>
+
+<h2>Launch Day Sequence (Monday March 9 — or date TBD)</h2>
+
+<table>
+<tr><th>Time (CET)</th><th>Action</th></tr>
+<tr><td>3:00 PM</td><td>Submit to 6 MCP registries</td></tr>
+<tr><td>4:00 PM</td><td>Post Show HN</td></tr>
+<tr><td>4:15 PM</td><td>Post Twitter thread (6 tweets, tag @AnthropicAI + @cursor_ai)</td></tr>
+<tr><td>4:20 PM</td><td>Quote-tweet the HN link</td></tr>
+<tr><td>4:30 PM</td><td>Post LinkedIn (company page)</td></tr>
+<tr><td>5:00–8:30 PM</td><td>Post to 7 communities (MCP Discord, r/mcp, r/ethereum, r/LocalLLaMA, ElizaOS Discord, etc.)</td></tr>
+<tr><td>10:00 PM</td><td>Email blast to existing Token Tool users</td></tr>
+</table>
+
+<hr>
+
+<h2>5–10 People to Pitch This Afternoon</h2>
+<p>These are warm/targeted outreach targets for the MCP launch — developer advocates, newsletter writers, and ecosystem leads who can amplify:
+
+<h3>Tier 1 — High Impact, Should Reply Fast</h3>
+<table>
+<tr><th>#</th><th>Person</th><th>Role</th><th>Why / Hook</th></tr>
+<tr><td>1</td><td><strong>David Soria Parra</strong></td><td>MCP Co-Creator @ Anthropic</td><td>Built the protocol — reaching out to the creator of MCP with a real-world use case is a strong signal. Will likely engage.</td></tr>
+<tr><td>2</td><td><strong>Patrick Hughes</strong></td><td>Sr. Dev Advocate @ Base (Coinbase)</td><td>Base is one of our 12 chains. "Your users can now deploy tokens on Base via Claude" — direct product fit.</td></tr>
+<tr><td>3</td><td><strong>Daniel Ortega</strong></td><td>Developer Relations @ Arbitrum Foundation</td><td>Same angle as Base — Arbitrum is supported. Dev advocates love showcasing third-party tooling.</td></tr>
+<tr><td>4</td><td><strong>Anthony Sassano</strong></td><td>Founder @ The Daily Gwei (19K+ newsletter)</td><td>Ethereum-native newsletter, covers tooling and infrastructure. Short note + repo link.</td></tr>
+<tr><td>5</td><td><strong>Jess Ramos</strong></td><td>Dev Advocate & AI Creator (450K+)</td><td>Builds Claude workflows, huge audience, covers exactly this kind of "Claude does X" content.</td></tr>
+</table>
+
+<h3>Tier 2 — Bigger targets, worth the shot</h3>
+<table>
+<tr><th>#</th><th>Person</th><th>Role</th><th>Why / Hook</th></tr>
+<tr><td>6</td><td><strong>Bhaji Illuminati</strong></td><td>CEO @ Centrifuge</td><td>Leading RWA platform — MCP makes their stack more accessible to agentic workflows.</td></tr>
+<tr><td>7</td><td><strong>Edwin Mata</strong></td><td>CEO @ Brickken</td><td>Forbes 40U40, democratizing tokenization — direct product alignment.</td></tr>
+<tr><td>8</td><td><strong>Tom Serres</strong></td><td>"The Double Helix" newsletter</td><td>Covers AI x Web3 intersection — this is exactly his beat.</td></tr>
+<tr><td>9</td><td><strong>Joachim Lebrun</strong></td><td>Head of Blockchain @ Apex/Tokeny</td><td>Created ERC-3643. MCP + compliance tokens = credibility story for his audience.</td></tr>
+<tr><td>10</td><td><strong>David Hoffman</strong></td><td>Co-Founder @ Bankless</td><td>AI x crypto narrative leader, massive crypto media reach.</td></tr>
+</table>
+
+<strong>Suggested message format (short, fast):</strong>
+> "Hey [name] — just open-sourced Token Tool MCP, the first MCP server for compliant token issuance. 8,300+ deployments, CertiK-audited. You can deploy a token from Claude in 30 seconds. Thought you'd find it interesting: github.com/thendrix-eng/token-tool-mcp"
+
+<hr>
+
+<h2>Blog Post</h2>
+Ready at: <code>projects/token-tool-mcp/launch/blog-post-mcp.md</code>
+Title: <em>"Introducing Token Tool MCP: Deploy Compliant Tokens with AI Agents"</em>
+~1,400 words, matches Bitbond blog style.
+
+<hr>
+
+<h2>What's Missing / Risks</h2>
+
+<table>
+<tr><th>Risk</th><th>Mitigation</th></tr>
+<tr><td>npm not published</td><td>Do it today — 10 min task</td></tr>
+<tr><td>Repo still private</td><td>Make public day before launch</td></tr>
+<tr><td>No real Sepolia addresses in demo</td><td>Test run Sunday</td></tr>
+<tr><td>Launch date still Monday?</td><td>Confirm today — could move to next week if npm/repo not ready</td></tr>
+<tr><td>Email list size unknown</td><td>Confirm with team how many Token Tool users to blast</td></tr>
+</table>
+
+<hr>
+
+<h2>Numbers to Know</h2>
+
+<li><strong>8,300+</strong> token deployments on Token Tool since 2020</li>
+<li><strong>12 chains</strong>: ETH, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche, Solana, Stellar + 3 testnets</li>
+<li><strong>11 MCP tools</strong>: deploy, mint, burn, pause, unpause, transfer, query, estimate cost, list chains</li>
+<li><strong>$299</strong> per mainnet deployment (same as web UI — testnet free)</li>
+<li><strong>CertiK audited</strong> contracts</li>
+<li><strong>MIT licensed</strong> — fully open source</li>
+<li><strong>6 registries</strong> to submit to on launch day</li>
+<li><strong>7 communities</strong> to post in on launch day</li>
+
+</div>
+
+<div id="blog" class="section">
+<h1>Introducing Token Tool MCP: Deploy Compliant Tokens with AI Agents</h1>
+
+<em>Category: Tokenization | March 2026</em>
+
+<hr>
+<p>The infrastructure layer of financial markets is being rewritten. AI agents are no longer tools that answer questions — they are becoming the primary interface through which enterprises interact with financial systems. Payments, trading, banking: all of these have already moved into the agentic stack. Token issuance has not. Until now.
+<p>Today, Bitbond is open-sourcing <strong>Token Tool MCP</strong>: the first MCP server for compliant token issuance. It connects any AI agent — Claude, Cursor, VS Code, or any MCP-compatible client — directly to Bitbond's production token infrastructure. The result: a CertiK-audited, compliance-ready ERC-20 token deployed on-chain in under 30 seconds, triggered by nothing more than a natural language instruction.
+<p>This article explains what Token Tool MCP is, how it works, what it enables, and why it matters for enterprises, developers, and anyone operating in the tokenized asset space.
+
+<hr>
+
+<h2>What Is Model Context Protocol (MCP)?</h2>
+
+<strong>Model Context Protocol (MCP)</strong> is an open standard developed by Anthropic that defines how AI agents connect to external tools, APIs, and data sources. In practical terms, it is a universal plugin layer for AI systems — the same way a REST API made services accessible to applications, MCP makes services accessible to AI agents.
+<p>MCP operates through a client-server model:
+
+<li><strong>MCP clients</strong> are AI tools like Claude Desktop, Cursor, and VS Code that support agent-native workflows</li>
+<li><strong>MCP servers</strong> are lightweight programs that expose a set of tools to those clients</li>
+<li>When a user issues a natural language instruction, the MCP client identifies the appropriate tool, calls the MCP server, and executes the action</li>
+<p>The ecosystem has grown rapidly. Major financial infrastructure providers have already published MCP servers:
+
+<li><strong>Stripe</strong> — payments</li>
+<li><strong>Alpaca</strong> — stock trading</li>
+<li><strong>Griffin</strong> — banking APIs</li>
+<p>These companies are not building MCP servers as an experiment. They are positioning their infrastructure as the default option when AI agents need to interact with financial systems. The platforms that are absent from this ecosystem will increasingly find themselves bypassed.
+<p>Token Tool MCP adds compliant token issuance to this stack — the first server to do so.
+
+<hr>
+
+<h2>What Token Tool MCP Does</h2>
+<p>Token Tool MCP wraps <a href="https://tokentool.bitbond.com">Bitbond Token Tool</a> — a platform that has powered <strong>8,300+ real-world token deployments since 2020</strong> using CertiK-audited smart contracts — and exposes it through 11 structured tools that any MCP-compatible AI agent can call directly.
+
+<h3>A Typical Interaction</h3>
+<p>The following example illustrates what a deployment looks like in practice:
+<p>> <em>"Deploy a token called Green Bond A, symbol GBA, 1 million supply on Base, with whitelist and pausable enabled."</em>
+<p>The AI agent calls <code>deploy_token</code>. Within approximately 30 seconds:
+
+<li>A CertiK-audited ERC-20 smart contract is deployed on Base</li>
+<li>The contract includes whitelist enforcement and emergency pause functionality</li>
+<li>The contract address and transaction hash are returned as structured output</li>
+<p>No Solidity knowledge required. No developer needed. No web interface to navigate.
+
+<h3>The 11 Tools</h3>
+<p>Token Tool MCP covers the complete token lifecycle — from initial deployment through day-to-day operations and compliance management:
+
+<table>
+<tr><th>Tool</th><th>Function</th></tr>
+<tr><td><code>deploy_token</code></td><td>Deploy a new compliant ERC-20 with optional compliance flags</td></tr>
+<tr><td><code>mint_tokens</code></td><td>Increase token supply post-deployment</td></tr>
+<tr><td><code>burn_tokens</code></td><td>Reduce supply from any authorized address</td></tr>
+<tr><td><code>pause_token</code></td><td>Halt all token transfers immediately (emergency stop)</td></tr>
+<tr><td><code>unpause_token</code></td><td>Resume normal token operations</td></tr>
+<tr><td><code>transfer_tokens</code></td><td>Execute token transfers between addresses</td></tr>
+<tr><td><code>get_token_info</code></td><td>Query live on-chain token state</td></tr>
+<tr><td><code>estimate_cost</code></td><td>Retrieve gas and fee estimates before committing to a transaction</td></tr>
+<tr><td><code>list_chains</code></td><td>View all supported blockchain networks</td></tr>
+<tr><td><code>list_deployed_tokens</code></td><td>List all tokens previously deployed from a wallet</td></tr>
+<tr><td><code>get_wallet_info</code></td><td>Check wallet balances and current state</td></tr>
+</table>
+
+<hr>
+
+<h2>Compliance Features Built In From Deployment</h2>
+<p>The critical distinction between Token Tool MCP and generic token deployers is <strong>compliance infrastructure at the contract level</strong>.
+<p>A basic ERC-20 deployment creates a transferable token with no restrictions. This is appropriate for utility tokens and simple governance tokens. It is not appropriate for tokenized securities, tokenized funds, or any asset subject to investor eligibility requirements or regulatory controls.
+<p>Token Tool MCP deploys contracts with the following compliance features selectable at issuance:
+
+<h3>Whitelist</h3>
+Transfers are restricted to pre-approved wallet addresses only. Investors must pass KYC/AML requirements and be explicitly added to the whitelist before they can receive or send the token. This is the standard structure for regulated security tokens and tokenized funds.
+
+<h3>Blacklist</h3>
+Specific wallet addresses can be blocked from all transactions. This supports compliance with sanctions screening, fraud response, and court-ordered freezes.
+
+<h3>Pausable</h3>
+All token transfers can be halted globally with a single transaction. This enables issuers to respond to legal events, security incidents, or regulatory orders without requiring individual action on each holder's wallet.
+
+<h3>Force Transfer</h3>
+Tokens can be moved from one wallet to another by an authorized administrator. This is a critical compliance feature for regulated securities — it enables recovery from compromised wallets, court-ordered transfers, and correction of erroneous transactions.
+
+<h3>Document URI</h3>
+Legal documentation — offering memoranda, terms and conditions, prospectuses — can be attached directly to the token on-chain via a URI reference. This creates an immutable, auditable link between the digital asset and its legal framework.
+
+<h3>Max Supply Cap</h3>
+A hard ceiling on total issuance can be enforced at the contract level, preventing any future minting beyond the authorized supply.
+<p>These features are embedded in the smart contract at deployment — not added as middleware or dependent on off-chain logic. They are the same compliance controls that Token Tool has offered on its web platform since 2020, now accessible through an AI-native interface.
+
+<hr>
+
+<h2>How It Works: Technical Architecture</h2>
+<p>Token Tool MCP runs locally via <strong>stdio transport</strong> — the standard MCP communication method for local tool execution. The architecture ensures that sensitive data never leaves the user's machine.
+<p>When an AI agent calls a deployment tool, the following sequence occurs:
+
+<li><strong>Transaction construction</strong> — The MCP server constructs a deployment transaction against Bitbond's on-chain smart contract factory, already deployed across all supported chains</li>
+<li><strong>Local signing</strong> — The user's private key (stored in a local environment variable) signs the transaction locally. The key is never transmitted, logged, or sent to any external server</li>
+<li><strong>Broadcast</strong> — The signed transaction is broadcast directly to the target blockchain</li>
+<li><strong>Factory execution</strong> — The on-chain factory deploys a CertiK-audited ERC-20 contract with the specified parameters</li>
+<li><strong>Response</strong> — The contract address and transaction hash are returned to the AI agent as structured output</li>
+<p>This architecture means Token Tool MCP has no dependency on Bitbond's servers for transaction execution. The MCP server is a local process that constructs and signs transactions independently.
+
+<h3>Security Considerations</h3>
+<p>Private key management follows the same approach used by established smart contract development tools including Hardhat and Foundry:
+
+<li>The private key is read from an environment variable at startup</li>
+<li>It is held in memory and used to sign transactions locally</li>
+<li>It is never passed as a CLI argument (which would expose it in process lists)</li>
+<li>It is never logged or transmitted</li>
+<li>The MCP server has no network listener — it communicates exclusively via stdio</li>
+<p>For enterprise deployments requiring additional security controls, hardware wallet integration is on the roadmap for Q2 2026.
+
+<hr>
+
+<h2>Supported Networks</h2>
+<p>Token Tool MCP supports <strong>12 blockchain networks</strong> at launch:
+
+<strong>EVM Mainnets</strong>
+<li>Ethereum</li>
+<li>Polygon</li>
+<li>BNB Chain</li>
+<li>Arbitrum</li>
+<li>Base</li>
+<li>Optimism</li>
+<li>Avalanche</li>
+
+<strong>Non-EVM Mainnets</strong>
+<li>Solana (SPL tokens)</li>
+<li>Stellar (Stellar Asset standard)</li>
+
+<strong>Testnets</strong>
+<li>Sepolia (Ethereum testnet)</li>
+<li>Mumbai (Polygon testnet)</li>
+<li>BSC Testnet</li>
+<p>Testnet deployments are effectively free and functionally identical to mainnet. All testnet tokens include the same compliance features available on mainnet.
+
+<hr>
+
+<h2>Pricing</h2>
+<p>Mainnet token deployments are priced at <strong>$299 per token</strong> — identical to the Token Tool web interface. This fee covers deployment using CertiK-audited smart contracts, compliance feature configuration, and multi-chain support.
+<p>Testnet deployments are free. For teams evaluating Token Tool MCP before committing to a mainnet deployment, Sepolia provides a complete testing environment with no cost.
+
+<hr>
+
+<h2>Getting Started</h2>
+
+<h3>Installation</h3>
+<p>Token Tool MCP is available via npm. Add it to your Claude Desktop configuration:
+
+<pre><code>{
+  "mcpServers": {
+    "token-tool": {
+      "command": "npx",
+      "args": ["-y", "token-tool-mcp"],
+      "env": {
+        "BITBOND_PRIVATE_KEY": "0x..."
+      }
+    }
+  }
+}
+</code></pre>
+<p>One-click installation configurations for Cursor and VS Code are available in the <a href="https://github.com/thendrix-eng/token-tool-mcp">GitHub repository</a>.
+
+<h3>Recommended First Steps</h3>
+
+<li><strong>Configure with a testnet wallet</strong> — Use a dedicated development wallet for testing, not a production wallet</li>
+<li><strong>Deploy on Sepolia</strong> — Run a full deployment flow: <code>deploy_token</code> → <code>get_token_info</code> → <code>mint_tokens</code> → <code>pause_token</code>. The full cycle takes under two minutes</li>
+<li><strong>Verify the contract</strong> — Use the returned contract address to inspect the deployed token on Etherscan's Sepolia explorer</li>
+<li><strong>Move to mainnet</strong> — Once the workflow is validated, switch to an Ethereum mainnet (or preferred chain) wallet and deploy</li>
+
+<hr>
+
+<h2>Why This Matters for the Tokenization Industry</h2>
+<p>The tokenization market is in a transition from experiment to infrastructure. BlackRock has tokenized a money market fund. Franklin Templeton manages on-chain assets. Deutsche Bank, Citi, and HSBC are building digital asset custody products. The infrastructure layer is maturing.
+<p>As this infrastructure matures, the firms that will capture the most value are not necessarily the ones with the best smart contracts — they are the ones whose infrastructure is easiest to integrate with whatever tooling enterprises use to operate.
+<p>In 2016, "does it have an API?" determined which financial infrastructure got adopted. In 2026, the equivalent question is increasingly <strong>"does it have an MCP server?"</strong>
+<p>Token Tool MCP is Bitbond's answer to that question.
+
+<hr>
+
+<h2>Open Source and MIT Licensed</h2>
+<p>Token Tool MCP is fully open source under the MIT license.
+
+<strong>GitHub:</strong> <a href="https://github.com/thendrix-eng/token-tool-mcp">github.com/thendrix-eng/token-tool-mcp</a>
+<strong>Install:</strong> <code>npx -y token-tool-mcp</code>
+<strong>Documentation:</strong> Full README and one-click install links in the repository
+<strong>Token Tool:</strong> <a href="https://tokentool.bitbond.com">tokentool.bitbond.com</a>
+<p>Contributions, issue reports, and integration questions are welcome. If you are building with Token Tool MCP, we would like to hear about it.
+
+<hr>
+
+<em>Bitbond GmbH is a regulated German fintech that has been operating since 2013. Token Tool has powered over 8,300 token deployments across 50+ countries. CertiK audit available on request.</em>
+
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

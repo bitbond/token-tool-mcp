@@ -1,10 +1,10 @@
 # Compliance Features
 
-Detailed guide to Token Tool MCP's compliance features — when to use them, regulatory context, and configuration examples.
+Detailed guide to TokenTool MCP's compliance features — when to use them, regulatory context, and configuration examples.
 
 ## Overview
 
-Token Tool MCP supports six compliance features that can be enabled at deployment. These are enforced at the smart contract level — they cannot be bypassed, and most cannot be added after deployment. Choose carefully.
+TokenTool MCP supports six compliance features that can be enabled at deployment. These are enforced at the smart contract level — they cannot be bypassed, and most cannot be added after deployment. Choose carefully.
 
 All features are optional. A token with no compliance flags behaves as a standard ERC-20 (or SPL / Stellar asset).
 

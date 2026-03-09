@@ -1,11 +1,11 @@
-# Token Tool MCP — Launch Thread (Bitbond X account)
+# TokenTool MCP — Launch Thread (Bitbond X account)
 
 Post Monday ~10 AM EST / 4 PM CET. Self-reply each tweet in sequence. Pin Tweet 1.
 
 ---
 
 ## Tweet 1 (hook — pin this)
-We just open-sourced Token Tool MCP.
+We just open-sourced TokenTool MCP.
 
 Deploy compliant ERC20 tokens from Claude, Cursor, or any AI agent — by typing a sentence.
 

@@ -1,0 +1,2 @@
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/news-title/title_segment.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/news-title/news_segment.mp4'

@@ -1,6 +1,6 @@
 # Chain Details
 
-Complete registry of all supported blockchain networks in Token Tool MCP.
+Complete registry of all supported blockchain networks in TokenTool MCP.
 
 ## EVM Chains (Mainnet)
 

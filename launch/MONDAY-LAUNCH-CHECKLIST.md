@@ -1,4 +1,4 @@
-# 🚀 Token Tool MCP — Monday Launch Checklist
+# 🚀 TokenTool MCP — Monday Launch Checklist
 
 **Target: Monday Feb 23, launch by 9 AM CET (= 3 AM EST, Show HN posts at 10 AM EST)**
 
@@ -65,7 +65,7 @@ git add smithery.yaml && git commit -m "add smithery.yaml" && git push
 
 ### Show HN
 - URL: https://news.ycombinator.com/submit
-- Title: `Show HN: Token Tool MCP – Deploy ERC20 tokens from Claude/Cursor by typing a sentence`
+- Title: `Show HN: TokenTool MCP – Deploy ERC20 tokens from Claude/Cursor by typing a sentence`
 - Text: copy from launch/hacker-news-post.md
 - **Best time: 10 AM EST sharp**
 

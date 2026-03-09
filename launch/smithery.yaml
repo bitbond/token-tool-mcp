@@ -1,5 +1,5 @@
 name: token-tool-mcp
-displayName: Bitbond Token Tool MCP
+displayName: Bitbond TokenTool MCP
 description: Deploy and manage compliant ERC20 tokens from Claude, Cursor, or any AI agent. CertiK-audited contracts. 10 EVM chains. Full token lifecycle — deploy, mint, burn, pause, transfer, query.
 version: 1.0.0
 author: Bitbond GmbH

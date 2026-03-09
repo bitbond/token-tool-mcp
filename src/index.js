@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Bitbond Token Tool MCP Server
+ * Bitbond TokenTool MCP Server
  * Gives AI agents a complete token issuance + lifecycle management API
  *
  * Usage:
@@ -104,7 +104,7 @@ server.tool(
 // ── Tool: deploy_token ──────────────────────────────────────────────────────
 server.tool(
   'deploy_token',
-  'Deploy a new token using Bitbond Token Tool. Supports EVM chains (ERC20, CertiK-audited), Solana (SPL tokens), and Stellar (assets).',
+  'Deploy a new token using Bitbond TokenTool. Supports EVM chains (ERC20, CertiK-audited), Solana (SPL tokens), and Stellar (assets).',
   {
     name: z.string().describe('Token name (e.g. "My Token")'),
     symbol: z.string().describe('Token symbol/ticker (e.g. "MTK")'),
@@ -436,7 +436,7 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  process.stderr.write('Bitbond Token Tool MCP server running (stdio)\n');
+  process.stderr.write('Bitbond TokenTool MCP server running (stdio)\n');
 }
 
 main().catch(e => {

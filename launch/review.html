@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Tool MCP — Launch Review</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
+    background: var(--surface); border-right: 1px solid var(--border);
+    padding: 24px 16px; overflow-y: auto; z-index: 10;
+  }
+  .sidebar h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; margin-top: 20px; }
+  .sidebar h3:first-of-type { margin-top: 0; }
+  .sidebar a { display: block; font-size: 13px; color: var(--muted); text-decoration: none; padding: 5px 8px; border-radius: 6px; margin-bottom: 2px; transition: all .15s; }
+  .sidebar a:hover { color: var(--text); background: var(--border); }
+  .sidebar .logo { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .sidebar .logo span { background: var(--accent); color: #000; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .main { margin-left: 220px; padding: 40px 48px; max-width: 960px; }
+  .page-header { margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
+  .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .page-header p { color: var(--muted); font-size: 15px; }
+  .badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; margin-right: 6px; margin-top: 12px; }
+  .badge-green { background: #3fb95018; color: var(--green); border: 1px solid #3fb95040; }
+  .badge-yellow { background: #d2992218; color: var(--yellow); border: 1px solid #d2992240; }
+  .badge-red { background: #f8514918; color: var(--red); border: 1px solid #f8514940; }
+  .badge-blue { background: #58a6ff18; color: var(--accent); border: 1px solid #58a6ff40; }
+  .doc-section { margin-bottom: 72px; }
+  .doc-section > h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .doc-section .section-meta { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .doc-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  .doc-card-header {
+    background: #1c2128; padding: 12px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #f85149; } .dot-y { background: #d29922; } .dot-g { background: #3fb950; }
+  .fname { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: var(--text); margin-left: 6px; }
+  .doc-card-body { padding: 28px; }
+  .doc-card-body h1 { font-size: 24px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .doc-card-body h2 { font-size: 18px; margin: 28px 0 10px; color: var(--text); }
+  .doc-card-body h3 { font-size: 14px; margin: 20px 0 6px; color: var(--accent); }
+  .doc-card-body p { margin-bottom: 12px; font-size: 14px; line-height: 1.75; }
+  .doc-card-body ul, .doc-card-body ol { margin: 0 0 14px 20px; font-size: 14px; line-height: 1.85; }
+  .doc-card-body li { margin-bottom: 3px; }
+  .doc-card-body code { background: #1f2937; color: #79c0ff; padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', monospace; font-size: 12px; }
+  .doc-card-body pre { background: #1c2128; border: 1px solid var(--border); border-radius: 8px; padding: 16px; overflow-x: auto; margin: 14px 0; }
+  .doc-card-body pre code { background: none; color: #e6edf3; font-size: 13px; padding: 0; line-height: 1.5; }
+  .doc-card-body strong { color: #fff; }
+  .doc-card-body em { color: var(--muted); }
+  .doc-card-body blockquote { border-left: 3px solid var(--accent); padding: 8px 14px; color: var(--muted); margin: 14px 0; font-style: italic; background: #1c212866; border-radius: 0 6px 6px 0; }
+  .doc-card-body hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .doc-card-body table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .doc-card-body th { text-align: left; padding: 8px 12px; background: #1c2128; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--border); }
+  .doc-card-body td { padding: 8px 12px; border-bottom: 1px solid #21262d; vertical-align: top; }
+  .doc-card-body a { color: var(--accent); text-decoration: none; }
+  .doc-card-body a:hover { text-decoration: underline; }
+  .tweet { background: #1c2128; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; font-size: 14px; line-height: 1.65; }
+  .tweet-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .callout { background: #d2992210; border: 1px solid #d2992230; border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 13px; line-height: 1.65; }
+  .callout-red { background: #f8514910; border-color: #f8514930; }
+  .callout strong { color: var(--yellow); }
+  .callout-red strong { color: var(--red); }
+  .changes-table { width: 100%; font-size: 13px; }
+  .changes-table td:first-child { width: 40%; font-weight: 600; color: var(--text); }
+  .changes-table td:nth-child(2) { color: var(--red); }
+  .changes-table td:nth-child(3) { color: var(--green); }
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="logo">Token Tool MCP <span>LAUNCH</span></div>
+  <h3>Documents</h3>
+  <a href="#readme">📄 README</a>
+  <a href="#twitter">🐦 Twitter Thread</a>
+  <a href="#hn">🟠 Hacker News</a>
+  <a href="#linkedin">💼 LinkedIn</a>
+  <a href="#checklist">✅ Checklist</a>
+</div>
+
+<div class="main">
+
+  <div class="page-header">
+    <h1>Token Tool MCP — Launch Review</h1>
+    <p>All documents finalized. Read through and give the go-ahead.</p>
+    <br>
+    <span class="badge badge-blue">Final review</span>
+    <span class="badge badge-green">Launch: Wed March 4, 4 PM CET</span>
+    <span class="badge badge-yellow">⚠️ Demo GIF still needed</span>
+    <span class="badge badge-green">6 docs ready</span>
+  </div>
+
+  <!-- README -->
+  <div class="doc-section" id="readme">
+    <h2>📄 GitHub README</h2>
+    <div class="section-meta">The product page. Most important document in the entire launch.</div>
+    <div class="doc-card">
+      <div class="doc-card-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="fname">README.md</span></div>
+      <div class="doc-card-body">
+        <h1>Token Tool MCP</h1>
+        <p>
+          <img src="https://img.shields.io/badge/npm-v1.1.0-blue" alt="npm">
+          <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT">
+          <img src="https://img.shields.io/badge/node-≥18-brightgreen" alt="Node">
+          <img src="https://img.shields.io/badge/networks-12-blue" alt="12 networks">
+          <img src="https://img.shields.io/badge/contracts-CertiK%20audited-green" alt="CertiK">
+        </p>
+
+        <p><strong>Deploy and manage compliant tokens from Claude, Cursor, or any AI agent — by typing a sentence.</strong></p>
+        <p>Built on <a href="#">Bitbond Token Tool</a> — 8,300+ deployments, CertiK-audited contracts, compliance built in.</p>
+
+        <hr>
+        <h2>See It in Action</h2>
+        <pre><code>"Deploy a token called Green Bond A, 1M supply on Base, with whitelist and pausable."</code></pre>
+        <p>→ CertiK-audited ERC-20 deployed on-chain in ~30 seconds. Contract address returned. No Solidity required.</p>
+
+        <hr>
+        <h2>Install</h2>
+
+        <h3>Claude Desktop</h3>
+        <p>Add to <code>~/.claude/claude_desktop_config.json</code>:</p>
+        <pre><code>{
+  "mcpServers": {
+    "token-tool": {
+      "command": "npx",
+      "args": ["-y", "token-tool-mcp"],
+      "env": {
+        "BITBOND_PRIVATE_KEY": "0x..."
+      }
+    }
+  }
+}</code></pre>
+
+        <h3>Cursor</h3>
+        <p><a href="#">→ One-click install for Cursor</a></p>
+        <p>Or add manually to <code>.cursor/mcp.json</code>:</p>
+        <pre><code>{
+  "mcpServers": {
+    "token-tool": {
+      "command": "npx",
+      "args": ["-y", "token-tool-mcp"],
+      "env": { "BITBOND_PRIVATE_KEY": "0x..." }
+    }
+  }
+}</code></pre>
+
+        <h3>VS Code</h3>
+        <p><a href="#">→ One-click install for VS Code</a></p>
+        <p>Or add to <code>.vscode/mcp.json</code>:</p>
+        <pre><code>{
+  "servers": {
+    "token-tool": {
+      "command": "npx",
+      "args": ["-y", "token-tool-mcp"],
+      "env": { "BITBOND_PRIVATE_KEY": "0x..." }
+    }
+  }
+}</code></pre>
+
+        <h3>Claude Code</h3>
+        <pre><code>claude mcp add token-tool -- npx -y token-tool-mcp</code></pre>
+        <p>Then: <code>export BITBOND_PRIVATE_KEY=0x...</code></p>
+
+        <hr>
+        <h2>Example Prompts</h2>
+        <table>
+          <tr><th>Prompt</th><th>What happens</th></tr>
+          <tr><td><em>"Deploy a governance token called DAO Vote, 10M supply on Polygon, mintable and burnable"</em></td><td>Deploys an audited ERC-20 with mint + burn</td></tr>
+          <tr><td><em>"Estimate cost to deploy on Arbitrum vs Base"</em></td><td>Returns gas + fee estimates for both</td></tr>
+          <tr><td><em>"Mint 500K more tokens to 0x1234..."</em></td><td>Mints to target, confirms tx</td></tr>
+          <tr><td><em>"Pause all transfers on contract 0xabcd..."</em></td><td>Activates emergency stop</td></tr>
+          <tr><td><em>"Show me everything I've deployed"</em></td><td>Lists all tokens from local registry</td></tr>
+          <tr><td><em>"Deploy an RWA security token on Ethereum with whitelist, force transfer, and document URI"</em></td><td>Full compliance token with investor restrictions</td></tr>
+        </table>
+
+        <hr>
+        <h2>Tools</h2>
+        <p>11 tools across the full token lifecycle:</p>
+        <table>
+          <tr><th>Tool</th><th>Description</th></tr>
+          <tr><td><code>deploy_token</code></td><td>Deploy a CertiK-audited ERC-20 with optional compliance features</td></tr>
+          <tr><td><code>estimate_cost</code></td><td>Quote deployment cost (gas + fee) before committing</td></tr>
+          <tr><td><code>list_chains</code></td><td>List all 12 supported networks with chain IDs and aliases</td></tr>
+          <tr><td><code>get_token_info</code></td><td>Live on-chain state — name, symbol, supply, paused, owner</td></tr>
+          <tr><td><code>list_deployed_tokens</code></td><td>Full local deployment registry</td></tr>
+          <tr><td><code>mint_tokens</code></td><td>Mint additional supply to any address</td></tr>
+          <tr><td><code>burn_tokens</code></td><td>Permanently destroy tokens</td></tr>
+          <tr><td><code>pause_token</code></td><td>Emergency stop — halt all transfers</td></tr>
+          <tr><td><code>unpause_token</code></td><td>Resume transfers after a pause</td></tr>
+          <tr><td><code>transfer_tokens</code></td><td>Send tokens to any address</td></tr>
+          <tr><td><code>get_wallet_info</code></td><td>Deployer wallet address and native balance</td></tr>
+        </table>
+
+        <hr>
+        <h2>Supported Networks</h2>
+        <p><strong>EVM (10):</strong> Ethereum · Polygon · BNB Chain · Arbitrum · Base · Optimism · Avalanche · Sepolia · Base Sepolia · BNB Testnet</p>
+        <p><strong>Non-EVM (2):</strong> Solana (SPL tokens) · Stellar (Stellar assets)</p>
+        <p>Human-friendly aliases: <code>eth</code>, <code>polygon</code>, <code>bnb</code>, <code>arb</code>, <code>base</code>, <code>op</code>, <code>avax</code>, <code>sepolia</code>, <code>sol</code>, <code>stellar</code></p>
+
+        <hr>
+        <h2>Compliance Features</h2>
+        <table>
+          <tr><th>Feature</th><th>Flag</th><th>What it does</th></tr>
+          <tr><td><strong>Whitelist</strong></td><td><code>--whitelist</code></td><td>Only approved addresses can hold or receive tokens</td></tr>
+          <tr><td><strong>Blacklist</strong></td><td><code>--blacklist</code></td><td>Block specific addresses from any interaction</td></tr>
+          <tr><td><strong>Pausable</strong></td><td><code>--pausable</code></td><td>Owner can freeze all transfers instantly</td></tr>
+          <tr><td><strong>Force Transfer</strong></td><td><code>--force-transfer</code></td><td>Owner can move tokens between addresses (regulatory recovery)</td></tr>
+          <tr><td><strong>Document URI</strong></td><td><code>--document-uri</code></td><td>Attach a prospectus or term sheet on-chain</td></tr>
+          <tr><td><strong>Max Supply Cap</strong></td><td><code>--max-supply</code></td><td>Hard ceiling on total supply, enforced at contract level</td></tr>
+        </table>
+
+        <hr>
+        <h2>How It Works</h2>
+        <pre><code>You (natural language) → MCP Client → Token Tool MCP (local)
+    → Bitbond contract factory → On-chain deployment</code></pre>
+        <ol>
+          <li>You type a prompt in your MCP client</li>
+          <li>The client calls the appropriate tool on the <strong>local</strong> MCP server (stdio — nothing leaves your machine yet)</li>
+          <li>The MCP server constructs a deployment transaction and submits it to Bitbond's on-chain contract factory</li>
+          <li>The factory deploys a CertiK-audited ERC-20 with your parameters</li>
+          <li>Contract address and tx hash are returned to your client</li>
+        </ol>
+        <p><strong>Your private key signs transactions locally.</strong> Read from env var, never passed as an argument, never transmitted.</p>
+
+        <hr>
+        <h2>Security</h2>
+        <ul>
+          <li><strong>Private key stays local.</strong> Read from env var only — never logged, never transmitted</li>
+          <li><strong>stdio transport.</strong> No network listener, no open ports</li>
+          <li><strong>CertiK-audited contracts.</strong> Battle-tested, not generated Solidity</li>
+          <li><strong>Testnet by default.</strong> Start on Sepolia — free and identical to mainnet</li>
+          <li><strong>Human-in-the-loop.</strong> Enable confirmation prompts for mainnet ($299/deployment)</li>
+        </ul>
+
+        <hr>
+        <h2>Pricing</h2>
+        <table>
+          <tr><th>Environment</th><th>Cost</th></tr>
+          <tr><td><strong>Testnet</strong> (Sepolia, Base Sepolia, BNB Testnet)</td><td>Gas only (~free)</td></tr>
+          <tr><td><strong>Mainnet</strong> (all production chains)</td><td>$299 flat + gas</td></tr>
+        </table>
+        <p>Same price as the <a href="#">web UI</a>. No subscription. No API key. No per-call charges.</p>
+
+        <hr>
+        <h2>Built on Token Tool</h2>
+        <ul>
+          <li><strong>8,300+</strong> tokens deployed across production networks</li>
+          <li><strong>CertiK-audited</strong> smart contracts</li>
+          <li>Used by enterprises, DAOs, and developers in <strong>50+ countries</strong></li>
+          <li>Live since 2020, maintained by Bitbond GmbH (Berlin)</li>
+        </ul>
+
+        <hr>
+        <p><strong>License:</strong> MIT — <a href="#">Bitbond GmbH</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TWITTER -->
+  <div class="doc-section" id="twitter">
+    <h2>🐦 Twitter / X Thread</h2>
+    <div class="section-meta">6 tweets. Post at 4 PM CET / 10 AM EST. Pin Tweet 1.</div>
+    <div class="doc-card">
+      <div class="doc-card-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="fname">v2-twitter-thread.md</span></div>
+      <div class="doc-card-body">
+        <div class="tweet">
+          <div class="tweet-label">Tweet 1 — Hook (pin this)</div>
+          Token Tool MCP is live.<br><br>
+          Tell Claude to deploy a CertiK-audited token on any of 12 chains. It does it in 30 seconds.<br><br>
+          Whitelist, blacklist, pausable, force transfer — compliance built in from the first prompt.<br><br>
+          Open source. 🧵
+        </div>
+        <div class="tweet">
+          <div class="tweet-label">Tweet 2 — Demo (attach GIF ⚠️)</div>
+          Here's the actual flow:<br><br>
+          "Deploy a token called Green Bond A, 1M supply on Base, whitelist and pausable enabled"<br><br>
+          → MCP server constructs the tx locally<br>
+          → Signs with your key (never leaves your machine)<br>
+          → CertiK-audited contract deployed on-chain<br>
+          → Contract address returned<br><br>
+          <em style="color: var(--yellow);">[demo GIF — non-negotiable]</em>
+        </div>
+        <div class="tweet">
+          <div class="tweet-label">Tweet 3 — Credibility</div>
+          Token Tool has powered 8,300+ real-world deployments since 2020.<br><br>
+          CertiK-audited contracts.<br>
+          Enterprises and DAOs across 50+ countries.<br>
+          10 EVM chains + Solana + Stellar.<br><br>
+          The MCP server wraps the same production infrastructure. Same contracts. Same audit. Same reliability.
+        </div>
+        <div class="tweet">
+          <div class="tweet-label">Tweet 4 — Positioning</div>
+          MCP servers exist for:<br>
+          → Payments (Stripe)<br>
+          → Trading (Alpaca)<br>
+          → Banking (Griffin)<br><br>
+          Nobody built one for compliant token issuance.<br><br>
+          We did. 11 tools. Full lifecycle — deploy, mint, burn, pause, transfer, query.
+        </div>
+        <div class="tweet">
+          <div class="tweet-label">Tweet 5 — Setup</div>
+          60-second install:<br><br>
+          <code>npx -y token-tool-mcp</code><br><br>
+          Add to Claude Desktop, Cursor, or VS Code config. Done.<br><br>
+          Start on Sepolia — it's free. Mainnet is $299/token, same price as the web UI.<br><br>
+          One-click install links in the README.
+        </div>
+        <div class="tweet">
+          <div class="tweet-label">Tweet 6 — CTA</div>
+          MIT licensed. Open source. Built by @bitbond.<br><br>
+          ⭐ github.com/thendrix-eng/token-tool-mcp<br><br>
+          What would you build if your AI agent could deploy tokens?<br><br>
+          Best answer gets a free mainnet deployment ($299 value). 👇
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HN -->
+  <div class="doc-section" id="hn">
+    <h2>🟠 Hacker News — Show HN</h2>
+    <div class="section-meta">Submit at 4 PM CET / 10 AM EST. Respond to every comment for 2 hours.</div>
+    <div class="doc-card">
+      <div class="doc-card-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="fname">v2-hacker-news-post.md</span></div>
+      <div class="doc-card-body">
+        <h2>Title</h2>
+        <blockquote>Show HN: Token Tool MCP – Deploy CertiK-audited ERC-20 tokens from Claude/Cursor in 30 seconds</blockquote>
+        <hr>
+        <h2>Body</h2>
+        <p>MCP servers exist for payments (Stripe), trading (Alpaca), and banking (Griffin). Nothing existed for compliant token issuance — the kind with investor whitelists, transfer restrictions, emergency pauses, and on-chain legal document references.</p>
+        <p>So we built one.</p>
+        <p>Token Tool MCP wraps Bitbond's Token Tool — a platform that's handled 8,300+ token deployments since 2020, using CertiK-audited smart contracts. The MCP server exposes the same infrastructure to AI agents.</p>
+        <blockquote>"Deploy a token called DAO Treasury, symbol DTRX, 5 million supply on Arbitrum, mintable and pausable"</blockquote>
+        <p>The agent calls <code>deploy_token</code>. A CertiK-audited ERC-20 is live on-chain in ~30 seconds.</p>
+
+        <h3>How it works under the hood</h3>
+        <p>The MCP server runs locally via stdio transport. When you deploy:</p>
+        <ol>
+          <li>Constructs a deployment transaction against Bitbond's on-chain smart contract factory</li>
+          <li>Your private key signs locally (read from env var — never logged, never transmitted)</li>
+          <li>Signed transaction broadcast to the target chain</li>
+          <li>Factory deploys a CertiK-audited ERC-20 with your parameters</li>
+          <li>Contract address + tx hash returned</li>
+        </ol>
+        <p>No data goes to Bitbond's servers. The contract factory is already deployed on each chain.</p>
+
+        <h3>What it can do</h3>
+        <p>11 tools: deploy, mint, burn, pause, unpause, transfer, get token info, estimate cost, list chains, list deployments, wallet info. Compliance flags: whitelist, blacklist, pausable, force transfer, document URI, max supply cap.</p>
+        <p>12 networks: Ethereum, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche, Solana, Stellar + 3 testnets.</p>
+
+        <h3>Technical details</h3>
+        <ul>
+          <li>stdio transport — Claude Desktop, Cursor, VS Code, any MCP client</li>
+          <li>Private key from env var, never logged or transmitted</li>
+          <li>$299 per mainnet deployment (same as the web UI — testnet is free)</li>
+          <li>MIT license</li>
+        </ul>
+        <p>Repo: github.com/thendrix-eng/token-tool-mcp</p>
+
+        <hr>
+        <h3>Pre-written objection responses (reference only — not part of post)</h3>
+        <div class="callout">
+          <strong>"$299 is expensive"</strong> → Same price as the web UI. CertiK-audited contracts with compliance features. Testnet is free.<br><br>
+          <strong>"Just a wrapper?"</strong> → Yes — same as Stripe's MCP server. The value is making infrastructure agent-addressable through a standard protocol.<br><br>
+          <strong>"Private key in env var?"</strong> → Standard for local dev tools (Hardhat, Foundry). Never logged, never transmitted. stdio = no network listener.<br><br>
+          <strong>"12K deployments — proof?"</strong> → tokentool.bitbond.com. Bitbond GmbH is a regulated German fintech since 2013.<br><br>
+          <strong>"Why not Thirdweb?"</strong> → Thirdweb is generic deployment. This is for compliant issuance — whitelist, blacklist, pausable, force transfer. Different use case.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="doc-section" id="linkedin">
+    <h2>💼 LinkedIn Post</h2>
+    <div class="section-meta">Bitbond company account. Product release. Post at 4:30 PM CET.</div>
+    <div class="doc-card">
+      <div class="doc-card-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="fname">v2-linkedin-post.md</span></div>
+      <div class="doc-card-body">
+        <p>Introducing Token Tool MCP — the first MCP server for compliant token issuance.</p>
+        <p>AI agents can now deploy, manage, and query tokenized assets directly through Bitbond's Token Tool infrastructure. No Solidity required.</p>
+        <p>What the Token Tool MCP server enables:</p>
+        <p>→ Deploy CertiK-audited tokens on 12 networks (Ethereum, Polygon, Arbitrum, Base, Solana, Stellar, and more)<br>
+        → Built-in compliance: whitelist, blacklist, pausable, force transfer, document URI<br>
+        → Full lifecycle management: mint, burn, pause, transfer, query — all via natural language<br>
+        → Works with Claude Desktop, Cursor, VS Code, and any MCP-compatible AI client</p>
+        <p>Token Tool has powered 8,300+ real-world token deployments since 2020. The MCP server wraps the same production infrastructure — same CertiK-audited contracts, same reliability.</p>
+        <p>Model Context Protocol (MCP) is the open standard that connects AI agents to real-world tools and data. Stripe, Alpaca, and Griffin have already adopted it for payments, trading, and banking. Token Tool MCP brings tokenized securities into the agentic finance stack.</p>
+        <p>Open source. MIT licensed. Free on testnet.</p>
+        <p>GitHub, npm install instructions, and documentation in the comments below.</p>
+        <p><em>#Tokenization #AgenticAI #MCP #RWA #Fintech</em></p>
+        <hr>
+        <h3>First comment:</h3>
+        <p>Get started in 60 seconds:<br><br>
+        → GitHub: github.com/thendrix-eng/token-tool-mcp<br>
+        → Install: <code>npx -y token-tool-mcp</code><br>
+        → Token Tool: tokentool.bitbond.com<br><br>
+        Compatible with Claude Desktop, Cursor, VS Code, Claude Code, and any MCP client.<br>
+        Start on testnet — it's free and identical to mainnet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="doc-section" id="checklist">
+    <h2>✅ Launch Checklist</h2>
+    <div class="section-meta">Phased timeline. All channels synchronized to 4 PM CET / 10 AM EST.</div>
+    <div class="doc-card">
+      <div class="doc-card-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="fname">v2-launch-checklist.md</span></div>
+      <div class="doc-card-body">
+        <h2>Today (Tuesday March 3) — Prep</h2>
+        <ul>
+          <li>☐ Replace repo README.md with v2 content</li>
+          <li>☐ <code>npm publish --access public</code></li>
+          <li>☐ Test <code>npx -y token-tool-mcp</code> from clean directory</li>
+          <li>☐ Full Sepolia test: deploy → mint → pause → unpause</li>
+          <li>☐ Make repo public</li>
+          <li>☐ Verify deeplinks work (Cursor + VS Code)</li>
+        </ul>
+
+        <div class="callout-red callout">
+          <strong>🎬 Demo GIF — #1 priority.</strong> Record 45-60s: Claude Desktop → deploy prompt on Sepolia → contract address returned. Convert to GIF with Gifski. Embed in README + attach to Tweet 2.
+        </div>
+
+        <h2>Launch Day (Wednesday March 4)</h2>
+
+        <h3>3:00 PM CET — Phase 1: Registries</h3>
+        <table>
+          <tr><th>#</th><th>Registry</th><th>Action</th></tr>
+          <tr><td>1</td><td><strong>awesome-mcp-servers</strong> (35K ⭐)</td><td>PR to punkpeye/awesome-mcp-servers</td></tr>
+          <tr><td>2</td><td><strong>Official MCP Registry</strong></td><td>PR to modelcontextprotocol/registry</td></tr>
+          <tr><td>3</td><td><strong>Smithery.ai</strong></td><td>npx @smithery/cli register</td></tr>
+          <tr><td>4</td><td><strong>mcp.so</strong></td><td>Submit form</td></tr>
+          <tr><td>5</td><td><strong>Glama.ai</strong></td><td>Submit form</td></tr>
+          <tr><td>6</td><td><strong>PulseMCP</strong></td><td>Submit form</td></tr>
+          <tr><td>7</td><td><strong>MCP Server Finder</strong></td><td>Submit form</td></tr>
+        </table>
+
+        <h3>4:00 PM CET — Phase 2: Show HN</h3>
+        <ul>
+          <li>☐ Submit to news.ycombinator.com</li>
+          <li>☐ Respond to every comment for 2 hours</li>
+        </ul>
+
+        <h3>4:15 PM CET — Phase 3: Twitter</h3>
+        <ul>
+          <li>☐ Post thread (6 tweets), pin Tweet 1</li>
+          <li>☐ Tag @AnthropicAI, @cursor_ai</li>
+          <li>☐ Quote-tweet HN when live</li>
+        </ul>
+
+        <h3>4:30 PM CET — Phase 4: LinkedIn</h3>
+        <ul>
+          <li>☐ Personal post + comment with links</li>
+          <li>☐ Bitbond company page post</li>
+        </ul>
+
+        <h3>5:00 PM CET — Phase 5: Communities</h3>
+        <ul>
+          <li>☐ Reddit: r/mcp, r/ethereum, r/LocalLLaMA, r/SolDev</li>
+          <li>☐ Discord: MCP, Anthropic Dev, ElizaOS</li>
+          <li>☐ Telegram: RWA + Web3 dev groups</li>
+        </ul>
+
+        <hr>
+        <h2>Success Metrics</h2>
+        <table>
+          <tr><th>Metric</th><th>Min</th><th>Target</th><th>Exceptional</th></tr>
+          <tr><td>GitHub stars (48h)</td><td>30</td><td>100</td><td>500+</td></tr>
+          <tr><td>npm installs (week 1)</td><td>50</td><td>200</td><td>1000+</td></tr>
+          <tr><td>HN front page</td><td>Top 50</td><td>Top 20</td><td>Top 5</td></tr>
+          <tr><td>Twitter impressions</td><td>10K</td><td>50K</td><td>200K+</td></tr>
+          <tr><td>Registry listings</td><td>3</td><td>5</td><td>7</td></tr>
+        </table>
+
+        <hr>
+        <h2>Objection Cheat Sheet</h2>
+        <table>
+          <tr><th>Objection</th><th>Response</th></tr>
+          <tr><td>"$299 is expensive"</td><td>Same as web UI. CertiK-audited. Testnet is free.</td></tr>
+          <tr><td>"Private key in env var?"</td><td>Standard (Hardhat/Foundry). Never logged. stdio = no network listener.</td></tr>
+          <tr><td>"Just a wrapper?"</td><td>Yes — so is Stripe's MCP server. That's what MCP servers are.</td></tr>
+          <tr><td>"Why not Thirdweb?"</td><td>Generic vs compliant. Whitelist, blacklist, pausable, force transfer.</td></tr>
+          <tr><td>"12K deployments proof?"</td><td>tokentool.bitbond.com. Bitbond GmbH, regulated German fintech since 2013.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid var(--border); padding-top: 32px; margin-top: 16px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between;">
+    <span>Prepared by Ders · March 3, 2026</span>
+    <span>Ready for final review ✓</span>
+  </div>
+
+</div>
+</body>
+</html>

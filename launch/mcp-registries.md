@@ -1,4 +1,4 @@
-# MCP Registries — Where to Submit Token Tool MCP
+# MCP Registries — Where to Submit TokenTool MCP
 
 ## Tier 1 — Must Submit (highest impact)
 

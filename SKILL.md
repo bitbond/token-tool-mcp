@@ -1,13 +1,13 @@
 ---
 name: token-tool-mcp
-description: Deploy and manage compliant tokens on 12 blockchain networks via Bitbond Token Tool MCP (17 tools). Use when user asks to deploy a token, create an ERC-20, issue a security token, tokenize an asset, mint tokens, burn tokens, pause token transfers, create an SPL token on Solana, issue a Stellar asset, estimate deployment cost, check token info, list deployed tokens, set up whitelist or blacklist compliance, manage whitelist/blacklist addresses, check compliance status, or manage token lifecycle. Supports EVM chains, Solana, and Stellar with CertiK-audited contracts.
+description: Deploy and manage compliant tokens on 12 blockchain networks via Bitbond TokenTool MCP (17 tools). Use when user asks to deploy a token, create an ERC-20, issue a security token, tokenize an asset, mint tokens, burn tokens, pause token transfers, create an SPL token on Solana, issue a Stellar asset, estimate deployment cost, check token info, list deployed tokens, set up whitelist or blacklist compliance, manage whitelist/blacklist addresses, check compliance status, or manage token lifecycle. Supports EVM chains, Solana, and Stellar with CertiK-audited contracts.
 ---
 
-# Token Tool MCP
+# TokenTool MCP
 
 ## Overview
 
-Token Tool MCP gives AI agents a complete token issuance and lifecycle management API built on [Bitbond Token Tool](https://tokentool.bitbond.com) — 8,300+ deployments, CertiK-audited smart contracts, compliance features built in. Supports EVM (Ethereum, Polygon, BNB Chain, Arbitrum, Base, Optimism, Avalanche + testnets), Solana (SPL tokens), and Stellar (assets).
+TokenTool MCP gives AI agents a complete token issuance and lifecycle management API built on [Bitbond TokenTool](https://tokentool.bitbond.com) — 8,300+ deployments, CertiK-audited smart contracts, compliance features built in. Supports EVM (Ethereum, Polygon, BNB Chain, Arbitrum, Base, Optimism, Avalanche + testnets), Solana (SPL tokens), and Stellar (assets).
 
 **Pricing:** Testnet deployments are free (gas only). Mainnet deployments cost a flat $299 fee paid in native token + gas.
 

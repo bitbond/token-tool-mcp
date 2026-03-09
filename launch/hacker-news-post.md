@@ -1,4 +1,4 @@
-# Show HN: Token Tool MCP – Deploy ERC20 tokens from Claude/Cursor by typing a sentence
+# Show HN: TokenTool MCP – Deploy ERC20 tokens from Claude/Cursor by typing a sentence
 
 I built an MCP server that lets AI agents deploy and manage compliant ERC20 tokens using Bitbond's CertiK-audited smart contracts.
 
@@ -27,7 +27,7 @@ The intersection of AI agents + tokenized finance felt like an obvious gap.
 - 10 EVM chains: Ethereum, Polygon, BNB, Arbitrum, Base, Optimism, Avalanche + testnets
 - $299/token flat fee on mainnet (near-zero on testnet)
 - Private key from env var only, never logged or transmitted
-- CertiK-audited contracts (Bitbond's Token Tool has processed 12,000+ token deployments)
+- CertiK-audited contracts (Bitbond's TokenTool has processed 12,000+ token deployments)
 
 **Get started in 60 seconds**
 
@@ -41,4 +41,4 @@ Add to your Claude Desktop or Cursor MCP config and you're live. Full integratio
 
 Repo: https://github.com/thendrix-eng/token-tool-mcp
 
-Happy to answer questions about the architecture, the Token Tool API, or MCP development in general.
+Happy to answer questions about the architecture, the TokenTool API, or MCP development in general.

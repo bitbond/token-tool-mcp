@@ -1,0 +1,3 @@
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/v2_claude.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/v2_terminal.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/v2_telegram.mp4'

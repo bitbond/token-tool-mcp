@@ -1,4 +1,4 @@
-# LinkedIn Outreach Targets — Token Tool MCP Launch
+# LinkedIn Outreach Targets — TokenTool MCP Launch
 
 ## AI Agent Developers/Builders (MCP ecosystem)
 

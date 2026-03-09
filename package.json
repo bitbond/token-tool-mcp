@@ -1,7 +1,7 @@
 {
   "name": "token-tool-mcp",
   "version": "1.1.0",
-  "description": "Bitbond Token Tool MCP — deploy and manage ERC20 tokens via AI agents",
+  "description": "Bitbond TokenTool MCP — deploy and manage ERC20 tokens via AI agents",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

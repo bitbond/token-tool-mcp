@@ -1,4 +1,4 @@
-# Token Tool MCP
+# TokenTool MCP
 
 [![npm version](https://img.shields.io/npm/v/token-tool-mcp.svg)](https://www.npmjs.com/package/token-tool-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -8,10 +8,10 @@
 
 **Deploy and manage compliant tokens from Claude, Cursor, or any AI agent — by typing a sentence.**
 
-Built on [Bitbond Token Tool](https://tokentool.bitbond.com) — 8,300+ deployments, CertiK-audited contracts, compliance built in.
+Built on [Bitbond TokenTool](https://tokentool.bitbond.com) — 8,300+ deployments, CertiK-audited contracts, compliance built in.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/thendrix-eng/token-tool-mcp/main/assets/demo-final.gif" alt="Token Tool MCP Demo" width="720">
+  <img src="https://raw.githubusercontent.com/thendrix-eng/token-tool-mcp/main/assets/demo-final.gif" alt="TokenTool MCP Demo" width="720">
 </p>
 
 ---
@@ -165,13 +165,13 @@ Optional flags on every deployment — the features institutional issuers and RW
 ## How It Works
 
 ```
-You (natural language) → MCP Client (Claude/Cursor/VS Code) → Token Tool MCP Server (local)
-    → Bitbond Token Tool API → Smart contract factory → On-chain deployment
+You (natural language) → MCP Client (Claude/Cursor/VS Code) → TokenTool MCP Server (local)
+    → Bitbond TokenTool API → Smart contract factory → On-chain deployment
 ```
 
 1. You type a prompt in your MCP client
 2. The client calls the appropriate tool on the **local** MCP server (stdio transport — nothing leaves your machine until step 3)
-3. The MCP server constructs a deployment transaction and submits it to Bitbond's Token Tool smart contract factory on the target chain
+3. The MCP server constructs a deployment transaction and submits it to Bitbond's TokenTool smart contract factory on the target chain
 4. The factory deploys a CertiK-audited ERC-20 contract with your parameters
 5. The contract address and transaction hash are returned to your MCP client
 
@@ -181,7 +181,7 @@ You (natural language) → MCP Client (Claude/Cursor/VS Code) → Token Tool MCP
 
 ## CLI
 
-Token Tool MCP also works as a standalone CLI for scripts, CI/CD, and non-MCP agents:
+TokenTool MCP also works as a standalone CLI for scripts, CI/CD, and non-MCP agents:
 
 ```bash
 # List all supported chains
@@ -249,7 +249,7 @@ All commands output structured JSON. Install globally with `npm install -g token
 | **Testnet** (Sepolia, Base Sepolia, BNB Testnet) | Gas only (~free) |
 | **Mainnet** (all production chains) | **$299** flat fee per deployment + gas |
 
-The $299 fee is Bitbond's standard Token Tool pricing — the same whether you deploy via the [web UI](https://tokentool.bitbond.com), the API, or this MCP server. It's paid in the chain's native token (ETH, MATIC, BNB, etc.) at the time of deployment. No subscription, no API key, no per-call charges.
+The $299 fee is Bitbond's standard TokenTool pricing — the same whether you deploy via the [web UI](https://tokentool.bitbond.com), the API, or this MCP server. It's paid in the chain's native token (ETH, MATIC, BNB, etc.) at the time of deployment. No subscription, no API key, no per-call charges.
 
 ---
 
@@ -273,16 +273,16 @@ token-tool-mcp/
 
 ---
 
-## Built on Token Tool
+## Built on TokenTool
 
-[Bitbond Token Tool](https://tokentool.bitbond.com) is one of the most widely used token deployment platforms in Web3:
+[Bitbond TokenTool](https://tokentool.bitbond.com) is one of the most widely used token deployment platforms in Web3:
 
 - **8,300+** tokens deployed across production networks
 - **CertiK-audited** smart contracts — [audit report](https://tokentool.bitbond.com)
 - Used by enterprises, DAOs, and developers in **50+ countries**
 - Live since 2020, maintained by [Bitbond GmbH](https://bitbond.com) (Berlin)
 
-Token Tool MCP wraps this same production infrastructure for AI agents.
+TokenTool MCP wraps this same production infrastructure for AI agents.
 
 ---
 

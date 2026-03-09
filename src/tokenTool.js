@@ -1,5 +1,5 @@
 /**
- * Bitbond Token Tool API wrapper + on-chain execution
+ * Bitbond TokenTool API wrapper + on-chain execution
  */
 const { ethers } = require('ethers');
 const fs = require('fs');
@@ -151,7 +151,7 @@ async function prepareDeployment(tokenConfig, chainId, deployerAddress) {
   });
 
   const text = await res.text();
-  if (!res.ok) throw new Error(`Token Tool API error ${res.status}: ${text}`);
+  if (!res.ok) throw new Error(`TokenTool API error ${res.status}: ${text}`);
 
   const data = JSON.parse(text);
   if (!data.success) throw new Error(`API returned failure: ${text}`);

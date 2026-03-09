@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Bitbond Token Tool CLI
+ * Bitbond TokenTool CLI
  * Deploy and manage tokens from the command line.
  * Supports EVM chains, Solana (SPL), and Stellar (assets).
  *
@@ -244,7 +244,7 @@ async function cmdRegistry() {
 }
 
 function showHelp() {
-  console.log(`Bitbond Token Tool CLI — deploy & manage ERC20 tokens
+  console.log(`Bitbond TokenTool CLI — deploy & manage ERC20 tokens
 
 Usage: token-tool <command> [options]
 

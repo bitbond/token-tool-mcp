@@ -1,0 +1,6 @@
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/p1_claude_ask.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/p2_term_ask.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/p3_tg_ask.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/p4_claude_result.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/p5_term_result.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/p6_tg_result.mp4'

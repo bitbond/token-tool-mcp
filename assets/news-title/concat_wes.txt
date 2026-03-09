@@ -1,0 +1,2 @@
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/news-title/wes_freeze.mp4'
+file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/news-title/wes_main.mp4'
