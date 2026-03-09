@@ -1,2 +1,0 @@
-file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/news-title/title_segment_audio.mp4'
-file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/news-title/news_segment_audio.mp4'

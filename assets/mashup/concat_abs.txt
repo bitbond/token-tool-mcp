@@ -1,4 +1,0 @@
-file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/seg_desktop_norm.mp4'
-file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/seg_term1_norm.mp4'
-file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/seg_term2_norm.mp4'
-file '/Users/travishendrix/clawd/projects/token-tool-mcp/assets/mashup/seg_telegram_norm.mp4'

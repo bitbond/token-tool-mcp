@@ -1,4 +1,0 @@
-file 'seg_desktop.mp4'
-file 'seg_term1.mp4'
-file 'seg_term2.mp4'
-file 'seg_telegram.mp4'

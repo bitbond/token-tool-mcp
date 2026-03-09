@@ -2,3 +2,19 @@ node_modules/
 data/registry.json
 .env
 *.log
+
+# Internal launch docs and strategy
+launch/
+
+# Raw video/image assets (keep only demo-final.gif for README)
+assets/demo-edit/
+assets/mashup/
+assets/news-title/
+assets/new_frame_*.jpg
+assets/*.cast
+assets/*.svg
+assets/*.mp4
+assets/demo.gif
+assets/demo-hq.gif
+assets/demo-max.gif
+assets/record-demo.sh
