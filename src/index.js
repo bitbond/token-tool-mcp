@@ -32,6 +32,11 @@ const {
   pauseToken,
   unpauseToken,
   loadRegistry,
+  addToWhitelist,
+  getWhitelist,
+  addToBlacklist,
+  removeFromBlacklist,
+  getBlacklist,
   ethers,
 } = require('./tokenTool');
 
@@ -317,6 +322,94 @@ server.tool(
         balance: ethers.formatEther(balance),
         symbol: chain.symbol,
         explorerUrl: `${chain.explorer}/address/${wallet.address}`,
+      };
+    })
+);
+
+// ── Tool: add_to_whitelist ───────────────────────────────────────────────────
+server.tool(
+  'add_to_whitelist',
+  'Add one or more addresses to a token\'s whitelist. Only whitelisted addresses can hold or receive tokens when whitelist is enabled. The token owner must call this before minting or transferring to new addresses.',
+  {
+    contract_address: z.string().describe('Token contract address'),
+    addresses: z.array(z.string()).describe('Array of wallet addresses to whitelist (e.g. ["0x123...", "0x456..."])'),
+    chain: z.string().describe('Chain the token is on'),
+  },
+  async ({ contract_address, addresses, chain: chainInput }) =>
+    run(async () => {
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const chain = resolveChain(chainInput);
+      return addToWhitelist(contract_address, addresses, chain, PRIVATE_KEY);
+    })
+);
+
+// ── Tool: get_whitelist ─────────────────────────────────────────────────────
+server.tool(
+  'get_whitelist',
+  'Get the current whitelist status and all whitelisted addresses for a token',
+  {
+    contract_address: z.string().describe('Token contract address'),
+    chain: z.string().describe('Chain the token is on'),
+  },
+  async ({ contract_address, chain: chainInput }) =>
+    run(async () => {
+      const chain = resolveChain(chainInput);
+      return getWhitelist(contract_address, chain);
+    })
+);
+
+// ── Tool: add_to_blacklist ──────────────────────────────────────────────────
+server.tool(
+  'add_to_blacklist',
+  'Block an address from interacting with the token. Blacklisted addresses cannot send or receive tokens. Only works if token was deployed with blacklist=true.',
+  {
+    contract_address: z.string().describe('Token contract address'),
+    address: z.string().describe('Wallet address to blacklist'),
+    chain: z.string().describe('Chain the token is on'),
+  },
+  async ({ contract_address, address, chain: chainInput }) =>
+    run(async () => {
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const chain = resolveChain(chainInput);
+      return addToBlacklist(contract_address, address, chain, PRIVATE_KEY);
+    })
+);
+
+// ── Tool: remove_from_blacklist ─────────────────────────────────────────────
+server.tool(
+  'remove_from_blacklist',
+  'Remove an address from the blacklist, allowing it to interact with the token again',
+  {
+    contract_address: z.string().describe('Token contract address'),
+    address: z.string().describe('Wallet address to remove from blacklist'),
+    chain: z.string().describe('Chain the token is on'),
+  },
+  async ({ contract_address, address, chain: chainInput }) =>
+    run(async () => {
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const chain = resolveChain(chainInput);
+      return removeFromBlacklist(contract_address, address, chain, PRIVATE_KEY);
+    })
+);
+
+// ── Tool: get_compliance_status ─────────────────────────────────────────────
+server.tool(
+  'get_compliance_status',
+  'Check if whitelist and blacklist features are enabled on a token, and get whitelist addresses if applicable',
+  {
+    contract_address: z.string().describe('Token contract address'),
+    chain: z.string().describe('Chain the token is on'),
+  },
+  async ({ contract_address, chain: chainInput }) =>
+    run(async () => {
+      const chain = resolveChain(chainInput);
+      const [wl, bl] = await Promise.all([
+        getWhitelist(contract_address, chain),
+        getBlacklist(contract_address, chain),
+      ]);
+      return {
+        whitelist: wl,
+        blacklist: bl,
       };
     })
 );

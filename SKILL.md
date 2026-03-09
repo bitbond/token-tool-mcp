@@ -1,6 +1,6 @@
 ---
 name: token-tool-mcp
-description: Deploy and manage compliant tokens on 12 blockchain networks via Bitbond Token Tool MCP. Use when user asks to deploy a token, create an ERC-20, issue a security token, tokenize an asset, mint tokens, burn tokens, pause token transfers, create an SPL token on Solana, issue a Stellar asset, estimate deployment cost, check token info, list deployed tokens, set up whitelist or blacklist compliance, or manage token lifecycle. Supports EVM chains, Solana, and Stellar with CertiK-audited contracts.
+description: Deploy and manage compliant tokens on 12 blockchain networks via Bitbond Token Tool MCP (16 tools). Use when user asks to deploy a token, create an ERC-20, issue a security token, tokenize an asset, mint tokens, burn tokens, pause token transfers, create an SPL token on Solana, issue a Stellar asset, estimate deployment cost, check token info, list deployed tokens, set up whitelist or blacklist compliance, manage whitelist/blacklist addresses, check compliance status, or manage token lifecycle. Supports EVM chains, Solana, and Stellar with CertiK-audited contracts.
 ---
 
 # Token Tool MCP
@@ -28,6 +28,11 @@ Token Tool MCP gives AI agents a complete token issuance and lifecycle managemen
 | `pause_token` | Emergency stop — halt all transfers (requires pausable=true) |
 | `unpause_token` | Resume transfers after a pause |
 | `get_wallet_info` | Deployer wallet address and native balance on a chain |
+| `add_to_whitelist` | Add addresses to token whitelist (batch supported) |
+| `get_whitelist` | View whitelist status and all whitelisted addresses |
+| `add_to_blacklist` | Block an address from token interactions |
+| `remove_from_blacklist` | Unblock a previously blacklisted address |
+| `get_compliance_status` | Check whitelist and blacklist configuration for a token |
 
 ## Instructions
 
@@ -70,9 +75,9 @@ For post-deployment operations, you need the contract address and chain. If the 
 
 Recommend compliance features based on the use case:
 
-- **Whitelist** — for security tokens, regulated assets, investor-only tokens. Only approved addresses can hold/receive tokens. Recommend when: KYC/AML requirements, accredited investor restrictions, or jurisdictional compliance.
+- **Whitelist** — for security tokens, regulated assets, investor-only tokens. Only approved addresses can hold/receive tokens. Recommend when: KYC/AML requirements, accredited investor restrictions, or jurisdictional compliance. After deployment, use `add_to_whitelist` to approve addresses (batch supported) and `get_whitelist` to view current whitelist. Use `get_compliance_status` to check both whitelist and blacklist state at once.
 
-- **Blacklist** — for blocking sanctioned or suspicious addresses. Recommend when: OFAC compliance, preventing known bad actors, or responding to exploit addresses.
+- **Blacklist** — for blocking sanctioned or suspicious addresses. Recommend when: OFAC compliance, preventing known bad actors, or responding to exploit addresses. After deployment, use `add_to_blacklist` to block addresses and `remove_from_blacklist` to unblock them.
 
 - **Pausable** — emergency stop capability. Recommend for: any token with significant value, security tokens, or tokens where the issuer needs a kill switch.
 

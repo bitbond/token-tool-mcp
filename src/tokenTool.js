@@ -31,6 +31,15 @@ const ERC20_ABI = [
   'function paused() view returns (bool)',
   // Ownership
   'function owner() view returns (address)',
+  // Whitelist
+  'function updateWhitelist(address[] accounts)',
+  'function getWhitelistedAddresses() view returns (address[])',
+  'function whitelist(address account) view returns (bool)',
+  'function isWhitelistEnabled() view returns (bool)',
+  // Blacklist
+  'function blackList(address account)',
+  'function removeFromBlacklist(address account)',
+  'function isBlacklistEnabled() view returns (bool)',
 ];
 
 // Registry path — use ~/.token-tool-mcp/ for global installs, local data/ for dev
@@ -314,6 +323,62 @@ async function unpauseToken(contractAddress, chain, privateKey) {
   return { txHash: tx.hash, explorerUrl: `${chain.explorer}/tx/${tx.hash}` };
 }
 
+async function addToWhitelist(contractAddress, addresses, chain, privateKey) {
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
+  // Validate all addresses
+  const validated = addresses.map(a => validateAddress(a, 'Whitelist address'));
+  const tx = await contract.updateWhitelist(validated);
+  await waitForTx(tx, chain);
+  return {
+    txHash: tx.hash,
+    addressesAdded: validated,
+    explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
+  };
+}
+
+async function getWhitelist(contractAddress, chain) {
+  const provider = getProvider(chain);
+  const contract = new ethers.Contract(contractAddress, ERC20_ABI, provider);
+  const enabled = await contract.isWhitelistEnabled().catch(() => false);
+  const addresses = enabled ? await contract.getWhitelistedAddresses().catch(() => []) : [];
+  return {
+    enabled,
+    addresses: [...addresses],
+    count: addresses.length,
+  };
+}
+
+async function addToBlacklist(contractAddress, address, chain, privateKey) {
+  address = validateAddress(address, 'Blacklist address');
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
+  const tx = await contract.blackList(address);
+  await waitForTx(tx, chain);
+  return {
+    txHash: tx.hash,
+    addressBlacklisted: address,
+    explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
+  };
+}
+
+async function removeFromBlacklist(contractAddress, address, chain, privateKey) {
+  address = validateAddress(address, 'Blacklist address');
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
+  const tx = await contract.removeFromBlacklist(address);
+  await waitForTx(tx, chain);
+  return {
+    txHash: tx.hash,
+    addressRemoved: address,
+    explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
+  };
+}
+
+async function getBlacklist(contractAddress, chain) {
+  const provider = getProvider(chain);
+  const contract = new ethers.Contract(contractAddress, ERC20_ABI, provider);
+  const enabled = await contract.isBlacklistEnabled().catch(() => false);
+  return { enabled };
+}
+
 module.exports = {
   estimateCost,
   deployToken,
@@ -325,5 +390,10 @@ module.exports = {
   unpauseToken,
   loadRegistry,
   addToRegistry,
+  addToWhitelist,
+  getWhitelist,
+  addToBlacklist,
+  removeFromBlacklist,
+  getBlacklist,
   ethers,
 };
