@@ -11,7 +11,7 @@
 Built on [Bitbond Token Tool](https://tokentool.bitbond.com) — 8,300+ deployments, CertiK-audited contracts, compliance built in.
 
 <p align="center">
-  <img src="./assets/demo-final.gif" alt="Token Tool MCP Demo" width="720">
+  <img src="https://raw.githubusercontent.com/thendrix-eng/token-tool-mcp/main/assets/demo-final.gif" alt="Token Tool MCP Demo" width="720">
 </p>
 
 ---
