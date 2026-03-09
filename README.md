@@ -139,9 +139,11 @@ Once connected, try these:
 
 ## Supported Networks
 
-**EVM (10):** Ethereum · Polygon · BNB Chain · Arbitrum · Base · Optimism · Avalanche · Sepolia · Base Sepolia · BNB Testnet
+**EVM (7):** Ethereum · Polygon · BNB Chain · Arbitrum · Base · Optimism · Avalanche
 
 **Non-EVM (2):** Solana (SPL tokens) · Stellar (Stellar assets)
+
+**Testnets (5):** Sepolia · Base Sepolia · BNB Testnet · Solana Devnet · Stellar Testnet
 
 Human-friendly aliases work everywhere: `eth`, `polygon`, `bnb`, `arb`, `base`, `op`, `avax`, `sepolia`, `sol`, `stellar`
 
