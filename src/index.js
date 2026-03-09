@@ -33,6 +33,7 @@ const {
   unpauseToken,
   loadRegistry,
   addToWhitelist,
+  removeFromWhitelist,
   getWhitelist,
   addToBlacklist,
   removeFromBlacklist,
@@ -340,6 +341,23 @@ server.tool(
       if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
       const chain = resolveChain(chainInput);
       return addToWhitelist(contract_address, addresses, chain, PRIVATE_KEY);
+    })
+);
+
+// ── Tool: remove_from_whitelist ──────────────────────────────────────────────
+server.tool(
+  'remove_from_whitelist',
+  'Remove one or more addresses from a token\'s whitelist. Removed addresses will no longer be able to hold or receive tokens.',
+  {
+    contract_address: z.string().describe('Token contract address'),
+    addresses: z.array(z.string()).describe('Array of wallet addresses to remove from whitelist'),
+    chain: z.string().describe('Chain the token is on'),
+  },
+  async ({ contract_address, addresses, chain: chainInput }) =>
+    run(async () => {
+      if (!PRIVATE_KEY) throw new Error('BITBOND_PRIVATE_KEY env var not set');
+      const chain = resolveChain(chainInput);
+      return removeFromWhitelist(contract_address, addresses, chain, PRIVATE_KEY);
     })
 );
 

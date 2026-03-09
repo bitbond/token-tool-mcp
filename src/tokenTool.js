@@ -324,14 +324,31 @@ async function unpauseToken(contractAddress, chain, privateKey) {
 }
 
 async function addToWhitelist(contractAddress, addresses, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
   const { contract } = await getSignedContract(contractAddress, chain, privateKey);
-  // Validate all addresses
+  // Validate new addresses
   const validated = addresses.map(a => validateAddress(a, 'Whitelist address'));
-  const tx = await contract.updateWhitelist(validated);
+  // Fetch existing whitelist and merge (updateWhitelist replaces the entire list)
+  const existing = await contract.getWhitelistedAddresses().catch(() => []);
+  const existingSet = new Set([...existing].map(a => a.toLowerCase()));
+  const merged = [...existing];
+  const added = [];
+  for (const addr of validated) {
+    if (!existingSet.has(addr.toLowerCase())) {
+      merged.push(addr);
+      added.push(addr);
+      existingSet.add(addr.toLowerCase());
+    }
+  }
+  if (added.length === 0) {
+    return { note: 'All addresses are already whitelisted', addresses: [...existing] };
+  }
+  const tx = await contract.updateWhitelist(merged);
   await waitForTx(tx, chain);
   return {
     txHash: tx.hash,
-    addressesAdded: validated,
+    addressesAdded: added,
+    totalWhitelisted: merged.length,
     explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
   };
 }
@@ -348,16 +365,51 @@ async function getWhitelist(contractAddress, chain) {
   };
 }
 
-async function addToBlacklist(contractAddress, address, chain, privateKey) {
-  address = validateAddress(address, 'Blacklist address');
+async function removeFromWhitelist(contractAddress, addresses, chain, privateKey) {
+  contractAddress = validateAddress(contractAddress, 'Contract address');
   const { contract } = await getSignedContract(contractAddress, chain, privateKey);
-  const tx = await contract.blackList(address);
+  const validated = addresses.map(a => validateAddress(a, 'Whitelist address'));
+  const removeSet = new Set(validated.map(a => a.toLowerCase()));
+  // Fetch existing and filter out the ones to remove
+  const existing = await contract.getWhitelistedAddresses().catch(() => []);
+  const remaining = [...existing].filter(a => !removeSet.has(a.toLowerCase()));
+  const removed = [...existing].filter(a => removeSet.has(a.toLowerCase()));
+  if (removed.length === 0) {
+    return { note: 'None of the specified addresses were on the whitelist', addresses: [...existing] };
+  }
+  const tx = await contract.updateWhitelist(remaining);
   await waitForTx(tx, chain);
   return {
     txHash: tx.hash,
-    addressBlacklisted: address,
+    addressesRemoved: removed,
+    totalWhitelisted: remaining.length,
     explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
   };
+}
+
+async function addToBlacklist(contractAddress, address, chain, privateKey) {
+  address = validateAddress(address, 'Blacklist address');
+  const { contract } = await getSignedContract(contractAddress, chain, privateKey);
+  try {
+    const tx = await contract.blackList(address);
+    await waitForTx(tx, chain);
+    return {
+      txHash: tx.hash,
+      addressBlacklisted: address,
+      explorerUrl: `${chain.explorer}/tx/${tx.hash}`,
+    };
+  } catch (e) {
+    // Decode known custom errors
+    if (e.data && e.data.startsWith('0xebdacb5f')) {
+      throw new Error('Cannot blacklist a whitelisted address. Remove from whitelist first.');
+    }
+    if (e.data && e.data.startsWith('0x')) {
+      // Check for AddrAlreadyBlacklisted
+      const msg = e.message || '';
+      if (msg.includes('already')) throw new Error('Address is already blacklisted.');
+    }
+    throw e;
+  }
 }
 
 async function removeFromBlacklist(contractAddress, address, chain, privateKey) {
@@ -391,6 +443,7 @@ module.exports = {
   loadRegistry,
   addToRegistry,
   addToWhitelist,
+  removeFromWhitelist,
   getWhitelist,
   addToBlacklist,
   removeFromBlacklist,
