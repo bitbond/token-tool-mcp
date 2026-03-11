@@ -1,6 +1,6 @@
 {
   "name": "token-tool-mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Bitbond TokenTool MCP — deploy and manage ERC20 tokens via AI agents",
   "main": "src/index.js",
   "scripts": {
@@ -45,8 +45,9 @@
     "token-tool": "./src/cli.js"
   },
   "homepage": "https://tokentool.bitbond.com",
+  "mcpName": "io.github.bitbond/token-tool",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thendrix-eng/token-tool-mcp"
+    "url": "https://github.com/bitbond/token-tool-mcp"
   }
 }
