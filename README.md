@@ -6,12 +6,12 @@
 [![10 Networks](https://img.shields.io/badge/networks-10-blue)](#supported-networks)
 [![CertiK Audited](https://img.shields.io/badge/contracts-CertiK%20audited-green)](https://tokentool.bitbond.com)
 
-**Deploy and manage compliant tokens from Claude, Cursor, or any AI agent — by typing a sentence.**
+**Deploy and manage tokens from Claude, Cursor, or any AI agent, by typing a sentence.**
 
-Built on [Bitbond TokenTool](https://tokentool.bitbond.com) — 8,300+ deployments, CertiK-audited contracts, compliance built in.
+Built on [Bitbond TokenTool](https://tokentool.bitbond.com): 7,000+ tokens deployed, CertiK-audited contracts, issuer controls (allowlist, blocklist, pause, force transfer) built in.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/thendrix-eng/token-tool-mcp/main/assets/demo-final.gif" alt="TokenTool MCP Demo" width="720">
+  <img src="https://raw.githubusercontent.com/bitbond/token-tool-mcp/main/assets/demo-final.gif" alt="TokenTool MCP Demo" width="720">
 </p>
 
 ---
@@ -107,7 +107,7 @@ Once connected, try these:
 | *"Mint 500K more tokens to 0x1234..."* | Mints to target address, confirms tx |
 | *"Pause all transfers on contract 0xabcd..."* | Activates the emergency stop |
 | *"Show me everything I've deployed"* | Lists all tokens from local registry |
-| *"Deploy an RWA security token on Ethereum with whitelist, force transfer, and document URI linking to the prospectus"* | Full compliance token with investor restrictions and legal doc reference |
+| *"Deploy an RWA security token on Ethereum with whitelist, force transfer, and document URI linking to the prospectus"* | Security-style token with investor transfer restrictions and an on-chain legal document reference |
 
 ---
 
@@ -117,9 +117,9 @@ Once connected, try these:
 
 | Tool | Description |
 |------|-------------|
-| `deploy_token` | Deploy a CertiK-audited ERC-20 with optional compliance features |
+| `deploy_token` | Deploy a CertiK-audited ERC-20 with optional issuer controls |
 | `estimate_cost` | Quote deployment cost (gas + fee) before committing funds |
-| `list_chains` | List all 12 supported networks with chain IDs and aliases |
+| `list_chains` | List supported networks (10 production, 5 testnets) with chain IDs and aliases |
 | `get_token_info` | Live on-chain token state — name, symbol, supply, paused status, owner |
 | `list_deployed_tokens` | Full local deployment registry |
 | `mint_tokens` | Mint additional supply to any address |
@@ -149,9 +149,9 @@ Human-friendly aliases work everywhere: `eth`, `polygon`, `bnb`, `arb`, `base`, 
 
 ---
 
-## Compliance Features
+## Issuer Controls
 
-Optional flags on every deployment — the features institutional issuers and RWA platforms need:
+Optional flags on every deployment, the controls institutional issuers and RWA platforms ask for. They are tools for an issuer's own compliance process; the token itself does not make an offering compliant.
 
 | Feature | Flag | What it does |
 |---------|------|-------------|
@@ -240,7 +240,7 @@ All commands output structured JSON. Install globally with `npm install -g token
 - **stdio transport.** The MCP server communicates with your client locally. No network listener, no open ports
 - **CertiK-audited contracts.** You're deploying battle-tested smart contracts, not generated Solidity
 - **Testnet by default.** We recommend starting on Sepolia or Base Sepolia — it's free and functionally identical to mainnet
-- **Human-in-the-loop.** For mainnet deployments ($299 each), enable confirmation prompts in your MCP client before executing transactions
+- **Human-in-the-loop.** For mainnet deployments ($499 each, see Pricing), enable confirmation prompts in your MCP client before executing transactions
 
 ---
 
@@ -249,9 +249,9 @@ All commands output structured JSON. Install globally with `npm install -g token
 | Environment | Cost |
 |-------------|------|
 | **Testnet** (Sepolia, Base Sepolia, BNB Testnet) | Gas only (~free) |
-| **Mainnet** (all production chains) | **$299** flat fee per deployment + gas |
+| **Mainnet** (all production chains) | **$499** flat fee per deployment + gas |
 
-The $299 fee is Bitbond's standard TokenTool pricing — the same whether you deploy via the [web UI](https://tokentool.bitbond.com), the API, or this MCP server. It's paid in the chain's native token (ETH, MATIC, BNB, etc.) at the time of deployment. No subscription, no API key, no per-call charges.
+The MCP deploys TokenTool's asset token contract (the one with allowlist, blocklist, force transfer and document URI), so the fee matches **Create Asset Token** on the [TokenTool pricing page](https://tokentool.bitbond.com/pricing), the same whether you deploy via the web UI, the API, or this MCP server. `estimate_cost` returns the live quote before you commit. It's paid in the chain's native token (ETH, MATIC, BNB, etc.) at the time of deployment. No subscription, no API key, no per-call charges.
 
 ---
 
