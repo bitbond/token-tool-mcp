@@ -1,7 +1,7 @@
 name: token-tool-mcp
 displayName: Bitbond TokenTool MCP
-description: Deploy and manage compliant ERC20 tokens from Claude, Cursor, or any AI agent. CertiK-audited contracts. 10 EVM chains. Full token lifecycle — deploy, mint, burn, pause, transfer, query.
-version: 1.0.0
+description: Deploy and manage ERC20, SPL and Stellar tokens from Claude, Cursor, or any AI agent. CertiK-audited contracts, 10 networks, full token lifecycle (deploy, mint, burn, pause, transfer, query).
+version: 1.1.1
 author: Bitbond GmbH
 license: MIT
 homepage: https://tokentool.bitbond.com
@@ -23,12 +23,12 @@ tags:
   - polygon
   - ai-agents
   - smart-contracts
-  - compliance
+  - issuer-controls
   - defi
 
 tools:
   - name: deploy_token
-    description: Deploy a compliant ERC20 token with optional whitelist, blacklist, pausable, force transfer, and document URI features
+    description: Deploy an ERC20 token with optional whitelist, blacklist, pausable, force transfer, and document URI features
   - name: mint_tokens
     description: Mint additional tokens to any address
   - name: burn_tokens
@@ -40,7 +40,7 @@ tools:
   - name: transfer_tokens
     description: Transfer tokens between addresses
   - name: force_transfer
-    description: Force transfer tokens (compliance feature)
+    description: Force transfer tokens (issuer control)
   - name: whitelist_address
     description: Add or remove an address from the whitelist
   - name: blacklist_address
